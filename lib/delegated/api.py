@@ -134,9 +134,6 @@ class Delegated:
                     record['istart'] = int(record['start'])
                     record['iend'] = int(record['start']) + int(record['value'])
                 #
-                # sys.stderr.write("RECORD ITEMS %s" % (str(record.values())))
-                # self.cursor.execute("INSERT INTO resources VALUES (?, ?, ?, ?, ?, ?, ?, ?)", record.items())
-                #sys.stderr.write('bindings: '+str(record)+'\n')
                 self.cursor.execute("INSERT INTO resources VALUES (:registry, :cc, :type, :start, :value, :date, :status, " + 
                                     " :prefix, :istart, :iend)", record)
                 #
@@ -229,26 +226,7 @@ class Delegated:
             raise e
         except:
             raise
-    #
-    
-    # reset
-    def reset(self, w_type='hard'):
-        if w_type == 'hard':
-            self.filters = [] 
-        self.version_line = {}
-        self.summary_lines = []
-        self.record_lines = []
-        self.cnt = {}        
-    # end reset
-    
-    # progress bar
-    def _progress_bar(self, cnt, step):
-        if cnt % step == 0:
-            dprint('.')
-            pass
-        else:
-            pass
-                
+    #                    
 # END class delegated
 
 ## test cases
