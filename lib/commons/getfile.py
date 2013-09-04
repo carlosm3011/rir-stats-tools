@@ -40,6 +40,12 @@ def getfile(w_url, w_file, w_update = 3600, ch_size=10*1024):
     Downloads a file object pointed by w_url and stores it on local file w_file.
     The w_update parameter marks how old the file can be. Files are only downloaded 
     if they are older than w_update seconds.
+    
+    :param w_url: URL of the file to get. All urllib2 URLs are supported, including file:///
+    :param w_update: Freshness timer in seconds. If the file was downloeaded less than this time ago the current copy is used, 
+                        thus avoiding unnecessary repeated downloads.
+    :param ch_size: Progress bar ticker step.
+    
     """
     try:
         dprint("Getting "+w_url+": ")
