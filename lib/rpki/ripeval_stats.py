@@ -31,16 +31,18 @@ class BatchValidationResults:
         try:
             self.file = open(w_fname, 'rb')
             self.stats = {}        
-            csv_r = csv.reader(self.file, delimiter="|")
+            csv_r = csv.reader(self.file, delimiter=",")
             row = True
             while row:
                 row = csv_r.next()
                 record = {}
-                print(row)
+                #print(row)
                 if string.find(str(row), "#") == -1:
                     record['uri'] = row[0].strip()
                     record['origin_as'] = row[1].strip()                
         #            
+        except StopIteration:
+            pass
         except:
             raise
     
