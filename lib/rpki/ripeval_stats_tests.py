@@ -32,7 +32,7 @@ class Test(unittest.TestCase):
         self.assertTrue(rx > 1, "at least one prefix should have been loaded")
     
     def test_resource_query(self):
-        rx = self.rvr.query("origin_as=:origin_as", {'origin_as', '28000'})
+        rx = self.rvr.query("origin_as=:origin_as", {'origin_as': '28000'})
         rows = rx.fetchall()
         self.assertTrue( len(rows) >= 1, "as 28000 has at least one prefix in roas")
         
