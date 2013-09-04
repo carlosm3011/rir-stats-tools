@@ -4,7 +4,6 @@ Created on Sep 3, 2013
 @author: marcelo
 '''
 
-import sys
 import csv
 import sqlite3
 import string
@@ -47,6 +46,8 @@ class BatchValidationResults:
                     record['uri'] = row[0].strip()
                     record['origin_as'] = row[1].strip()                
         #            
+        except StopIteration:
+            pass
         except:
             raise
     
