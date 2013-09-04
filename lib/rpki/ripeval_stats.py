@@ -4,6 +4,7 @@ Created on Sep 3, 2013
 @author: marcelo
 '''
 
+import sys
 import csv
 import sqlite3
 import string
@@ -31,13 +32,18 @@ class BatchValidationResults:
         try:
             self.file = open(w_fname, 'rb')
             self.stats = {}        
-            csv_r = csv.reader(self.file, delimiter="|")
+            csv_r = csv.reader(self.file, delimiter=",")
             row = True
             while row:
                 row = csv_r.next()
                 record = {}
                 print(row)
-                if string.find(str(row), "#") == -1:
+                if string.find(str(row), "#") != -1:
+                    continue
+                elif string.find(str(row), "URI") != -1:
+                    continue
+                else:
+                    sys.stderr.write("row: %s -- len row: %s" % (row, len(row)))
                     record['uri'] = row[0].strip()
                     record['origin_as'] = row[1].strip()                
         #            
