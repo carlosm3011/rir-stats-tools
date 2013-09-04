@@ -29,8 +29,6 @@
 import urllib2
 import os
 import sys
-#import gzip
-#import ipaddr
 import time
 from commons.dprint import dprint
 #

@@ -5,7 +5,7 @@
 
 import os
 
-srchome = os.environ['SRCHOME']
+srchome = os.environ.get('SRCHOME', '')
 
 paths = { 'tmp': "%s/tmp" % (srchome)
          }

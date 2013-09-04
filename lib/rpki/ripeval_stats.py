@@ -35,9 +35,27 @@ import string
 
 ### BEGIN
 class BatchValidationResults:
+    """
+    Imports a RIPE Validator dump into a sqlite memory database. Allows generic SQL-like querying.
+    
+    In-memory database columns are:
+    
+        * uri
+        * origin_as
+        * prefix
+        * max_len
+        * valid_from, valid_until
+        * istart
+        * iend
+    
+    :author: carlos@lacnic.net
+    """
     
     ### begin
     def __init__(self):
+        '''
+        Default constructor
+        '''
         #
         try:
             #self.conn = sqlite3.connect('/tmp/res.db')
@@ -52,6 +70,11 @@ class BatchValidationResults:
     ### end        
     
     def read_csv(self, w_fname):
+        '''
+        Load ROA data from RIPE batch validator CSV output. 
+        
+        :param w_fname: file name of the CSV file to import. 
+        '''
         # init variables
         try:
             self.file = open(w_fname, 'rb')
@@ -92,6 +115,15 @@ class BatchValidationResults:
     
     ## begin
     def query(self, w_query, w_parameters):
+        """
+        Runs an arbitrary SQL query against the in-memory database.
+        
+        :param w_query: the query itself (what comes after the WHERE SQL keyword) using named parameters for column values, as in:
+                        'origin_as=:oas'
+                        
+        :param w_parameters: an associative array with parameter values. Must be consistent with the names used for wquery, as in:
+                            {'oas': '28000'}
+        """
         sql = "SELECT * FROM roapfx WHERE %s" % (w_query)
         try:
             return self.cursor.execute(sql, w_parameters)
@@ -104,6 +136,17 @@ class BatchValidationResults:
     
     ## begin
     def stats(self, w_stat_name):
+        """
+        Returns the value of one of several collected stats during CSV import. 
+        Returns None if w_stat_name does not exist.
+        
+        Currently defined stat values are:
+        
+            * faled_inserts: how many INSERT statements failed during import
+            * prefixes: how many prefixes were succesfully inserted into the in-memory database
+        
+        :param w_stat_name: named stat value.
+        """
         return self._stats.get(w_stat_name)
     ## end
 ### END

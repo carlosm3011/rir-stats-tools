@@ -25,6 +25,11 @@
 # SOFTWARE.
 #===============================================================================
 
+"""
+Delegated API Class
+(c) carlos@lacnic.net
+"""
+
 import csv
 import os
 import sys
@@ -67,6 +72,9 @@ class Delegated:
     ## end init
     
     def read_delegated(self):
+        """
+        Load the stats file specified in the constructor.
+        """
         # init variables
         self.file = open(self.filename, 'rb')        
         self.version_line = {}

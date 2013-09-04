@@ -1,6 +1,5 @@
 # carlos@lacnic.net 20121128
 # version 0.1
-
 #===============================================================================
 # Copyright (c) 2012 LACNIC - Latin American and Caribbean Internet 
 # Address Registry
@@ -25,6 +24,10 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 #===============================================================================
+'''
+lib.commons.dprint (c) Marcelo 2013
+Generic logging and debug printing utilities.
+'''
 
 import os
 import sys
@@ -32,10 +35,17 @@ import sys
 ##############################################################################
 class dprint:
     def __init__(self, w_sys_loglevel = 3):
+        '''
+        Default constructor. Parameters are:
+            w_sys_loglevel: current log level in the system
+        '''
         self.sys_loglevel = w_sys_loglevel
         pass
     #
     def log(self, w_msg, w_level = 3):
+        """
+        Log message to standard error stream.
+        """
         if w_level >= self.sys_loglevel:
             sys.stderr.write(w_msg)
 ##############################################################################
