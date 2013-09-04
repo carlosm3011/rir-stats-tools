@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>rpki.ripeval_stats &mdash; RIR Stat Tools 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="RIR Stat Tools 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for rpki.ripeval_stats</h1><div class="highlight"><pre>
+<span class="c">#===============================================================================</span>
+<span class="c"># Copyright (c) 2011 LACNIC - Latin American and Caribbean Internet </span>
+<span class="c"># Address Registry</span>
+<span class="c"># </span>
+<span class="c"># Permission is hereby granted, free of charge, to any person </span>
+<span class="c"># obtaining a copy of this software and associated documentation </span>
+<span class="c"># files (the &quot;Software&quot;), to deal in the Software without </span>
+<span class="c"># restriction, including without limitation the rights to use, copy, </span>
+<span class="c"># modify, merge, publish, distribute, sublicense, and/or sell copies </span>
+<span class="c"># of the Software, and to permit persons to whom the Software is </span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c"># </span>
+<span class="c"># The above copyright notice and this permission notice shall be </span>
+<span class="c"># included in all copies or substantial portions of the Software.</span>
+<span class="c"># </span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, </span>
+<span class="c"># EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF </span>
+<span class="c"># MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND </span>
+<span class="c"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS </span>
+<span class="c"># BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN </span>
+<span class="c"># ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN </span>
+<span class="c"># CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE </span>
+<span class="c"># SOFTWARE.</span>
+<span class="c">#===============================================================================</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Sep 3, 2013</span>
+
+<span class="sd">@author: marcelo</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="c">### BEGIN</span>
+<div class="viewcode-block" id="BatchValidationResults"><a class="viewcode-back" href="../../rpki.html#rpki.ripeval_stats.BatchValidationResults">[docs]</a><span class="k">class</span> <span class="nc">BatchValidationResults</span><span class="p">:</span>
+    
+    <span class="c">### begin</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c">#self.conn = sqlite3.connect(&#39;/tmp/res.db&#39;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;:memory:&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;&#39;&#39; CREATE TABLE roapfx (uri text, origin_as text, prefix text, max_len int,  &#39;&#39;&#39;</span> <span class="o">+</span> 
+                                <span class="sd">&#39;&#39;&#39; valid_from text, valid_until text, istart unsigned big int, iend unsigned big int) &#39;&#39;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+    <span class="c">### end        </span>
+    
+<div class="viewcode-block" id="BatchValidationResults.read_csv"><a class="viewcode-back" href="../../rpki.html#rpki.ripeval_stats.BatchValidationResults.read_csv">[docs]</a>    <span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_fname</span><span class="p">):</span>
+        <span class="c"># init variables</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">w_fname</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="p">{}</span>        
+            <span class="n">csv_r</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+            <span class="c"># row = True</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_r</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">csv_r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                <span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="s">&quot;URI&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c">#sys.stderr.write(&quot;row: %s -- len row: %s&quot; % (row, len(row)))</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;uri&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;origin_as&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;max_len&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;valid_from&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;valid_until&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c"># insert into db</span>
+                    <span class="c">#print(record)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;INSERT INTO roapfx VALUES (:uri, :origin_as, :prefix, :max_len, &quot;</span> <span class="o">+</span> 
+                                            <span class="s">&quot; :valid_from, :valid_until, :istart, :iend)&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s">&#39;prefixes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;prefixes&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s">&#39;failed_inserts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;failed_inserts&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
+        <span class="c">#            </span>
+        <span class="k">except</span> <span class="n">csv</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+            <span class="k">raise</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+    
+    <span class="c">## begin</span></div>
+<div class="viewcode-block" id="BatchValidationResults.query"><a class="viewcode-back" href="../../rpki.html#rpki.ripeval_stats.BatchValidationResults.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_query</span><span class="p">,</span> <span class="n">w_parameters</span><span class="p">):</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;SELECT * FROM roapfx WHERE </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">w_query</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">w_parameters</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+    <span class="c">## end</span>
+    
+    <span class="c">## begin</span></div>
+<div class="viewcode-block" id="BatchValidationResults.stats"><a class="viewcode-back" href="../../rpki.html#rpki.ripeval_stats.BatchValidationResults.stats">[docs]</a>    <span class="k">def</span> <span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_stat_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w_stat_name</span><span class="p">)</span>
+    <span class="c">## end</span>
+<span class="c">### END</span>
+    
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;not to be run directly&quot;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Carlos Martinez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

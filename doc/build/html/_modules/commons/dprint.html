@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>commons.dprint &mdash; RIR Stat Tools 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="RIR Stat Tools 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for commons.dprint</h1><div class="highlight"><pre>
+<span class="c"># carlos@lacnic.net 20121128</span>
+<span class="c"># version 0.1</span>
+<span class="c">#===============================================================================</span>
+<span class="c"># Copyright (c) 2012 LACNIC - Latin American and Caribbean Internet </span>
+<span class="c"># Address Registry</span>
+<span class="c"># </span>
+<span class="c"># Permission is hereby granted, free of charge, to any person </span>
+<span class="c"># obtaining a copy of this software and associated documentation </span>
+<span class="c"># files (the &quot;Software&quot;), to deal in the Software without </span>
+<span class="c"># restriction, including without limitation the rights to use, copy, </span>
+<span class="c"># modify, merge, publish, distribute, sublicense, and/or sell copies </span>
+<span class="c"># of the Software, and to permit persons to whom the Software is </span>
+<span class="c"># furnished to do so, subject to the following conditions:</span>
+<span class="c"># </span>
+<span class="c"># The above copyright notice and this permission notice shall be </span>
+<span class="c"># included in all copies or substantial portions of the Software.</span>
+<span class="c"># </span>
+<span class="c"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, </span>
+<span class="c"># EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF </span>
+<span class="c"># MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND </span>
+<span class="c"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS </span>
+<span class="c"># BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN </span>
+<span class="c"># ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN </span>
+<span class="c"># CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE </span>
+<span class="c"># SOFTWARE.</span>
+<span class="c">#===============================================================================</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">lib.commons.dprint (c) Marcelo 2013</span>
+<span class="sd">Generic logging and debug printing utilities.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c">##############################################################################</span>
+<div class="viewcode-block" id="dprint"><a class="viewcode-back" href="../../commons.html#commons.dprint.dprint">[docs]</a><span class="k">class</span> <span class="nc">dprint</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_sys_loglevel</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Default constructor. Parameters are:</span>
+<span class="sd">            w_sys_loglevel: current log level in the system</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_loglevel</span> <span class="o">=</span> <span class="n">w_sys_loglevel</span>
+        <span class="k">pass</span>
+    <span class="c">#</span>
+<div class="viewcode-block" id="dprint.log"><a class="viewcode-back" href="../../commons.html#commons.dprint.dprint.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_msg</span><span class="p">,</span> <span class="n">w_level</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Log message to standard error stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">w_level</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_loglevel</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">w_msg</span><span class="p">)</span>
+<span class="c">##############################################################################</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;dprint should not be used directly&quot;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Carlos Martinez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lib.commons module documentation &mdash; RIR Stat Tools 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="RIR Stat Tools 0.1 documentation" href="index.html" />
+    <link rel="next" title="lib.delegated module documentation" href="delegated.html" />
+    <link rel="prev" title="Welcome to RIR Stat Tools’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="delegated.html" title="lib.delegated module documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to RIR Stat Tools’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lib-commons-module-documentation">
+<h1>lib.commons module documentation<a class="headerlink" href="#lib-commons-module-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The lib.commons module gropus several utility functions.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="section" id="module-commons.getfile">
+<span id="getfile"></span><h2>getfile<a class="headerlink" href="#module-commons.getfile" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="commons.getfile.getfile">
+<tt class="descclassname">commons.getfile.</tt><tt class="descname">getfile</tt><big>(</big><em>w_url</em>, <em>w_file</em>, <em>w_update=3600</em>, <em>ch_size=10240</em><big>)</big><a class="reference internal" href="_modules/commons/getfile.html#getfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.getfile.getfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file object pointed by w_url and stores it on local file w_file.
+The w_update parameter marks how old the file can be. Files are only downloaded 
+if they are older than w_update seconds.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-commons.dprint">
+<span id="dprint"></span><h2>dprint<a class="headerlink" href="#module-commons.dprint" title="Permalink to this headline">¶</a></h2>
+<p>lib.commons.dprint (c) Marcelo 2013
+Generic logging and debug printing utilities.</p>
+<dl class="class">
+<dt id="commons.dprint.dprint">
+<em class="property">class </em><tt class="descclassname">commons.dprint.</tt><tt class="descname">dprint</tt><big>(</big><em>w_sys_loglevel=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="commons.dprint.dprint.log">
+<tt class="descname">log</tt><big>(</big><em>w_msg</em>, <em>w_level=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log message to standard error stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-commons.utils">
+<span id="utils"></span><h2>utils<a class="headerlink" href="#module-commons.utils" title="Permalink to this headline">¶</a></h2>
+<p>Created on Sep 3, 2013</p>
+<p>&#64;author: marcelo</p>
+<dl class="function">
+<dt id="commons.utils.get_tmp_file_name">
+<tt class="descclassname">commons.utils.</tt><tt class="descname">get_tmp_file_name</tt><big>(</big><em>w_name=None</em><big>)</big><a class="reference internal" href="_modules/commons/utils.html#get_tmp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.get_tmp_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a full path to a temp file name, using the current system properties
+if filename is None then a random name is created</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">lib.commons module documentation</a><ul>
+<li><a class="reference internal" href="#module-commons.getfile">getfile</a></li>
+<li><a class="reference internal" href="#module-commons.dprint">dprint</a></li>
+<li><a class="reference internal" href="#module-commons.utils">utils</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to RIR Stat Tools&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="delegated.html"
+                        title="next chapter">lib.delegated module documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/commons.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="delegated.html" title="lib.delegated module documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to RIR Stat Tools’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Carlos Martinez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
