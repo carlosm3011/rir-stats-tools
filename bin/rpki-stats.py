@@ -24,6 +24,7 @@ import rpki.ripeval_stats
 import commons.getfile
 import commons.dprint
 import commons.utils
+import commons.statkeeper
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -74,36 +75,57 @@ def main(argv=None): # IGNORE:C0111
 USAGE
 ''' % (program_shortdesc, str(__date__))
 
+    program_banner = '''
+        (c) Carlos M. Martinez, carlos@lacnic.net, 2013-09-05
+        version %s\n
+    ''' % (program_version_message)
+
     try:
+        print "*** RPKI Stats Tooling\n"
+        print program_banner
         # Setup argument parser
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
-        # parser.add_argument("-r", "--recursive", dest="recurse", action="store_true", help="recurse into subfolders [default: %(default)s]")
-        # parser.add_argument("-v", "--verbose", dest="verbose", action="count", help="set verbosity level [default: %(default)s]")
-        parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RE" )
-        parser.add_argument("-s", "--section", dest="section", help="stat section to generate. [default: %(default)s]", metavar="RE" )
+        # parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RIR" )
+        parser.add_argument("-q", "--file-query", dest="filequery", help="Python-like query to be read from file and run via eval(). [default: %(default)s]", metavar="QUERY" )
         parser.add_argument('-V', '--version', action='version', version=program_version_message)
-        # parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
+        parser.add_argument(dest="query", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="query", nargs='?')
         
         # Process arguments
         args = parser.parse_args()
         
-        rir = args.rir
-        section = args.section
+        # rir = args.rir
+        rir = 'lacnic'
+        if args.query:
+            query = " ".join(args.query)
+        else:
+            query = None
+            
+        ## if queryfile specified, we run the file and check for the expected functions and values
+        if args.filequery:
+            filequery = args.filequery
+            myloc = {}
+            execfile(queryfile, globals(), myloc )
+            if type(myloc.get('roa_test') != type(lambda x:x)):
+                raise CLIError("Function roa_test not found in file %s" % (queryfile))
+            if type(myloc.get('roa_match') != type(lambda x:x)):
+                myloc['roa_match'] = lambda x:True
+            if type(myloc.get('roa_no_match') != type(lambda x:x)):
+                myloc['roa_match'] = lambda x:True
                 
-        if not rir or not section:
-            sys.stderr.write("Both rir and section MUST be defined.\n")
-            raise CLIError("Both rir and section MUST be defined.")
+        if not query and not filequery:
+            sys.stderr.write("Either query or filequery MUST be defined.\n")
+            raise CLIError("Either query or filequery MUST be defined.\n")
         
         ## init logging
         dp = commons.dprint.dprint()
         
-        ##
-        # rpki per-country stats
+        # init local stats
+        sk = commons.statkeeper.statkeeper()
         
         # get delegated
         dp.log("Downloading stat file for RIR %s..." % (rir))
         dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-lacnic-latest")
-        commons.getfile.getfile("ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest", dlg_tmpfile, 3600)
+        commons.getfile.getfile("ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest", dlg_tmpfile, 43200)
         dp.log(" OK\n")
         
         dp.log("Importing delegated stats in memory... ")
@@ -121,29 +143,45 @@ USAGE
         ripeval_stats.read_csv(dlg_tmpfile)
         dp.log(" OK\n")
         
-        ##
-        cc = args.section
         ## process ROAs
         rx = ripeval_stats.query("1=1", {})
         for row in rx:
+            sk.incKey('ripeval-proc-rows')
             pfx1 = ipaddr.IPNetwork(row['prefix'])
             pfx2 = ipaddr.IPNetwork(pfx1.network)
             drec = dlg_api.resource_find_inside(str(pfx2))
             if drec:
-                if drec['cc'] == cc:
-                    print "prefix %s, alloc_pfx %s, origin_as %s, cc %s" % (row['prefix'], drec['prefix'], row['origin_as'], drec['cc'])
+                if queryfile:
+                    if myloc['roa_test'](drec):
+                        sk.incKey('matched-rows')
+                        myloc['roa_match'](drec, row)
+                    else:
+                        sk.incKey('non-matched-rows')
+                        myloc['roa_no_match'](drec, row)
+                elif query:
+                    if eval(query, None, drec):
+                        print "prefix %s, alloc_pfx %s, origin_as %s, cc %s" % (row['prefix'], drec['prefix'], row['origin_as'], drec['cc'])
+                        sk.incKey('matched-rows')
+                else:
+                    sk.incKey('non-matched-rows')
+                    pass
             else:
-                pass
+                sk.incKey('rows-not-found-in-dlg')
                 dp.log("\n ERROR: prefix :%s: should have been found in dlg file\n" % (row['prefix']))
         
+        print "\n\nRun Stats:\n"
+        print sk
+        
+        print "*** END Run\n"
         return 0
     
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
         return 0
-    except Exception, e:
+    except Exception as e:
         if DEBUG or TESTRUN:
-            raise(e)
+            print e.message
+            raise e
         indent = len(program_name) * " "
         sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help\n")
