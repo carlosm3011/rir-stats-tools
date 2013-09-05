@@ -17,6 +17,7 @@ It defines classes_and_methods
 
 import sys
 import os
+import ipaddr
 import etc.properties
 import delegated.api
 import rpki.ripeval_stats
@@ -120,15 +121,20 @@ USAGE
         ripeval_stats.read_csv(dlg_tmpfile)
         dp.log(" OK\n")
         
+        ##
+        cc = args.section
         ## process ROAs
         rx = ripeval_stats.query("1=1", {})
         for row in rx:
-            drec = dlg_api.resource_find_inside(row['prefix'])
+            pfx1 = ipaddr.IPNetwork(row['prefix'])
+            pfx2 = ipaddr.IPNetwork(pfx1.network)
+            drec = dlg_api.resource_find_inside(str(pfx2))
             if drec:
-                if drec['cc'] == 'UY':
-                    print row
+                if drec['cc'] == cc:
+                    print "prefix %s, alloc_pfx %s, origin_as %s, cc %s" % (row['prefix'], drec['prefix'], row['origin_as'], drec['cc'])
             else:
-                dp.log("\n ERROR: prefix :%s: should have been found in dlg file" % (row['prefix']))
+                pass
+                dp.log("\n ERROR: prefix :%s: should have been found in dlg file\n" % (row['prefix']))
         
         return 0
     

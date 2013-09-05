@@ -132,7 +132,7 @@ class Delegated:
                     record['istart'] = int(pfx.network)
                     record['iend'] = int(pfx.broadcast)
                 elif record['type'] == 'ipv6':
-                    pfx_norm_base = math.pow(2,64)
+                    pfx_norm_base = pow(2,64)
                     pfx = ipaddr.IPv6Network( record['start'] + "/" + record['value'] )
                     record['prefix'] = str(pfx)
                     record['istart'] = int(pfx.network) / pfx_norm_base
@@ -191,18 +191,21 @@ class Delegated:
             pfx = ipaddr.IPNetwork(w_resource)
             if pfx.version == 4:
                 pfx_range = (int(pfx.network), int(pfx.broadcast))
+                sql1 = "SELECT * FROM resources WHERE type='ipv4' and istart <= ? and iend >= ? LIMIT 1" 
             else:
-                pfx_norm_base = math.pow(2,64)
+                pfx_norm_base = pow(2,64)
                 pfx_range = (int(pfx.network) / pfx_norm_base, int(pfx.broadcast) / pfx_norm_base)
+                sql1 = "SELECT * FROM resources WHERE type='ipv6' and istart <= ? and iend >= ? LIMIT 1" 
         except ValueError as e:
             # if not a v4 or v6 pfx, assume its an asn
             pfx_range = (int(w_resource), int(w_resource))
+            sql1 = "SELECT * FROM resources WHERE type='asn' and istart <= ? and iend > ? LIMIT 1" 
         except:
             raise
                 
         try:            
             #
-            sql1 = "SELECT * FROM resources WHERE istart <= ? and iend > ? LIMIT 1" 
+            #sql1 = "SELECT * FROM resources WHERE istart <= ? and iend >= ? LIMIT 1" 
             res = self.cursor.execute(sql1, pfx_range )
             if res:
                 row = res.fetchone()

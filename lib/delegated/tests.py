@@ -98,10 +98,12 @@ class TDD_Delegated(unittest.TestCase):
     
     ###
     def test_resource_find_inside_ipv6(self):
-        tst_res = ['2001:13c7:7001::', '2800:a0::/30', '2800:a0:dead:beef::1/64']
+        tst_res = ['2001:13c7:7001::/128', '2001:13c7:7001::/48', '2800:a0::/30', '2800:a0:dead:beef::1/64', '2803:4e00::/32']
         for x in tst_res:
             rx = self.dlg.resource_find_inside(x)
-            self.assertTrue(rx['cc'] == 'UY', x + ' should be in UY')
+            #print(rx)
+            self.assertTrue( rx != None, "Prefix %s should have been found in dlg" % (x) )
+            self.assertTrue( rx['cc'] == 'UY', x + ' should be in UY' )
     ###
     
     ###
@@ -109,6 +111,8 @@ class TDD_Delegated(unittest.TestCase):
         tst_res = ['1797', '6057', '28001']
         for x in tst_res:
             rx = self.dlg.resource_find_inside(x)
+            #sys.stderr.write(str(rx)+'\n')
+            self.assertTrue( rx != None, "Prefix %s should have been found in dlg" % (x) )
             self.assertTrue(rx['cc'] == 'UY', x + ' should be in UY')
     ###
     
@@ -119,7 +123,7 @@ class TDD_Delegated(unittest.TestCase):
         for (x,y) in test_cases.iteritems():
             rx =  self.dlg.resource_query("cc = :cc", {'cc': x} )
             rows = rx.fetchall()
-            self.assertEqual( len(rows), y, "%s recourds should count %s but counts %s" % (x,y,len(rows)) )
+            self.assertTrue( len(rows) >= y, "%s recourds should count %s but counts %s" % (x,y,len(rows)) )
     ###    
     
 #################################################################################

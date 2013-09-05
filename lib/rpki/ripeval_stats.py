@@ -82,7 +82,7 @@ class BatchValidationResults:
             csv_r = csv.reader(self.file, delimiter=",")
             # row = True
             for row in csv_r:
-                row = csv_r.next()
+                # row = csv_r.next()
                 record = {}
                 if string.find(str(row), "#") != -1:
                     continue

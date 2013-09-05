@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -92,6 +90,12 @@
 <span class="sd">    Downloads a file object pointed by w_url and stores it on local file w_file.</span>
 <span class="sd">    The w_update parameter marks how old the file can be. Files are only downloaded </span>
 <span class="sd">    if they are older than w_update seconds.</span>
+<span class="sd">    </span>
+<span class="sd">    :param w_url: URL of the file to get. All urllib2 URLs are supported, including file:///</span>
+<span class="sd">    :param w_update: Freshness timer in seconds. If the file was downloeaded less than this time ago the current copy is used, </span>
+<span class="sd">                        thus avoiding unnecessary repeated downloads.</span>
+<span class="sd">    :param ch_size: Progress bar ticker step.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">dprint</span><span class="p">(</span><span class="s">&quot;Getting &quot;</span><span class="o">+</span><span class="n">w_url</span><span class="o">+</span><span class="s">&quot;: &quot;</span><span class="p">)</span>
@@ -162,7 +166,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>
