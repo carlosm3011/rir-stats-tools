@@ -160,7 +160,7 @@ USAGE
             drec = dlg_api.resource_find_inside(str(pfx2))
             if drec:
                 if roa_query_in:
-                    if roa_query_in.roa_test(drec):
+                    if roa_query_in.roa_test(drec, row):
                         sk.incKey('matched-rows')
                         roa_query_in.roa_match(drec, row)
                     else:

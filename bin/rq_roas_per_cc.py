@@ -11,8 +11,19 @@ class RoaQuery():
 		self.ccs = ['AR', 'UY', 'CL', 'EC', 'PE', 'CO', 'VE', 'BO', 'PY', 'PA', 'CR', 'HN', 'CU', 'DO', 
 					'SV', 'CW', 'AN', 'TT', 'BZ', 'NI', 'GT']
 		self.counts = {}
+		self.counts4 = {}
+		self.counts6 = {}
+		self.totals4 = {}
+		self.totals6 = {}
 
 	def roa_test(self, drec, dlg_row):
+		
+		if dlg_row['type'] == 'ipv4':
+				self.totals4 = self.totals4.get(drec['cc'], 0) + int ( dlg_row['value'] / 256 )
+		elif dlg_row['type'] == 'ipv6':
+				n48s = 0
+				self.totals6 = self.totals6.get(drec['cc'], 0) + n48s
+		
 		if drec['cc'] in self.ccs:
 			return True
 		else:
