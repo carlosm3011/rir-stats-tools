@@ -103,14 +103,22 @@ USAGE
         ## if queryfile specified, we run the file and check for the expected functions and values
         if args.filequery:
             filequery = args.filequery
-            myloc = {}
-            execfile(queryfile, globals(), myloc )
-            if type(myloc.get('roa_test') != type(lambda x:x)):
-                raise CLIError("Function roa_test not found in file %s" % (queryfile))
-            if type(myloc.get('roa_match') != type(lambda x:x)):
-                myloc['roa_match'] = lambda x:True
-            if type(myloc.get('roa_no_match') != type(lambda x:x)):
-                myloc['roa_match'] = lambda x:True
+            fq_locals = {}
+            execfile(filequery, globals(), fq_locals )
+            try:
+                rq_class = fq_locals['RoaQuery']
+                roa_query_in = rq_class()
+            except:
+                raise
+            #===================================================================
+            # if not type(myloc.get('roa_test', None)):
+            #     print myloc, myloc.get('roa_test')
+            #     raise CLIError("Function roa_test not found in file %s" % (queryfile))
+            # if not myloc.get('roa_match', None):
+            #     myloc['roa_match'] = lambda x,y:True
+            # if type(myloc.get('roa_no_match') != type(lambda x:x)):
+            #     myloc['roa_no_match'] = lambda x,y:True
+            #===================================================================
                 
         if not query and not filequery:
             sys.stderr.write("Either query or filequery MUST be defined.\n")
@@ -151,13 +159,13 @@ USAGE
             pfx2 = ipaddr.IPNetwork(pfx1.network)
             drec = dlg_api.resource_find_inside(str(pfx2))
             if drec:
-                if queryfile:
-                    if myloc['roa_test'](drec):
+                if roa_query_in:
+                    if roa_query_in.roa_test(drec):
                         sk.incKey('matched-rows')
-                        myloc['roa_match'](drec, row)
+                        roa_query_in.roa_match(drec, row)
                     else:
                         sk.incKey('non-matched-rows')
-                        myloc['roa_no_match'](drec, row)
+                        roa_query_in.roa_no_match(drec, row)
                 elif query:
                     if eval(query, None, drec):
                         print "prefix %s, alloc_pfx %s, origin_as %s, cc %s" % (row['prefix'], drec['prefix'], row['origin_as'], drec['cc'])
@@ -168,6 +176,8 @@ USAGE
             else:
                 sk.incKey('rows-not-found-in-dlg')
                 dp.log("\n ERROR: prefix :%s: should have been found in dlg file\n" % (row['prefix']))
+        ## end for
+        roa_query_in.finalize()
         
         print "\n\nRun Stats:\n"
         print sk
