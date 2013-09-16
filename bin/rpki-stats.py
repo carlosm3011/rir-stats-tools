@@ -31,7 +31,7 @@ from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
 __all__ = []
-__version__ = 0.1
+__version__ = 0.2
 __date__ = '2013-09-04'
 __updated__ = '2013-09-04'
 
@@ -139,7 +139,7 @@ USAGE
     dp.log("Downloading stat file for RIR %s..." % (rir))
     dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-latest" % (rir))
     # commons.getfile.getfile("ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest", dlg_tmpfile, 43200)
-    dlg_tmpfile = commons.getfile.getfile(etc.rirconfig.rir_config_data[rir]['dlg1'][0], dlg_tmpfile, 43200)
+    dlg_tmpfile = commons.getfile.getfile(etc.rirconfig.rir_config_data[rir]['dlge'][0], dlg_tmpfile, 43200)
     dp.log(" OK\n")
     
     dp.log("Importing delegated stats in memory... ")
