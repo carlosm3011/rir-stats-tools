@@ -1,0 +1,96 @@
+{
+    "date-created": "20121227",
+    "date-updated": "20130916",
+    "country-codes": {
+        "AR": {
+            "name": "Argentina"
+        },
+        "AW": {
+            "name": "Aruba"
+        },
+        "BR": {
+            "name": "Brazil"
+        },
+        "BZ": {
+            "name": "Belize"
+        },
+        "BO": {
+            "name": "Bolivia"
+        },
+        "CL": {
+            "name": "Chile"
+        },
+        "CO": {
+            "name": "Colombia"
+        },
+        "CR": {
+            "name": "Costa Rica"
+        },
+        "CU": {
+            "name": "Cuba"
+        },
+        "DO": {
+            "name": "Dominican Republic"
+        },
+        "EC": {
+            "name": "Ecuador"
+        },
+        "SV": {
+            "name": "El Salvador"
+        },
+        "FK": {
+            "name": "Falkland Islands"
+        },
+        "GF": {
+            "name": "French Guiana"
+        },
+        "GT": {
+            "name": "Guatemala"
+        },
+        "GY": {
+            "name": "Guyana"
+        },
+        "HT": {
+            "name": "Haiti"
+        },
+        "HN": {
+            "name": "Honduras"
+        },
+        "MX": {
+            "name": "Mexico"
+        },
+        "AN": {
+            "name": "Netherland Antilles"
+        },
+        "NI": {
+            "name": "Nicaragua"
+        },
+        "PA": {
+            "name": "Panama"
+        },
+        "PY": {
+            "name": "Paraguay"
+        },
+        "PE": {
+            "name": "Peru"
+        },
+        "GS": {
+            "name": "South Georgia and the South Sandwich Islands"
+        },
+        "SR": {
+            "name": "Suriname"
+        },
+        "TT": {
+            "name": "Trinidad and Tobago"
+        },
+        "UY": {
+            "name": "Uruguay"
+        },
+        "CW": {
+            "name": "Curacao"
+        },        
+        "VE": {
+            "name": "Venezuela"
+        }
+    }
+}
