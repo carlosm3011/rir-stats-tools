@@ -4,12 +4,16 @@
 #
 #-----------------------------------------------------------
 
+import etc.rirconfig
 
 class RoaQuery():
 
-	def __init__(self):
-		self.ccs = ['AR', 'UY', 'CL', 'EC', 'PE', 'CO', 'VE', 'BO', 'PY', 'PA', 'CR', 'HN', 'CU', 'DO', 
-					'SV', 'CW', 'AN', 'TT', 'BZ', 'NI', 'GT']
+	def __init__(self, w_rir):
+		#self.ccs = ['AR', 'UY', 'CL', 'EC', 'PE', 'CO', 'VE', 'BO', 'PY', 'PA', 'CR', 'HN', 'CU', 'DO', 
+		#			'SV', 'CW', 'AN', 'TT', 'BZ', 'NI', 'GT']
+		
+		self.ccs = etc.rirconfig.rir_config_data[w_rir]['countrydata']['country-codes'].keys()
+		
 		self.counts = {}
 		self.counts4 = {}
 		self.counts6 = {}

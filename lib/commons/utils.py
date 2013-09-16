@@ -7,6 +7,7 @@ Created on Sep 3, 2013
 import etc.properties
 import tempfile
 import os
+import json
 
 ### begin
 def get_tmp_file_name(w_name = None):
@@ -24,6 +25,18 @@ def get_tmp_file_name(w_name = None):
     return tmp_file
 
 ### end
+
+### begin
+def json_load(w_file_name):
+    fn = "%s/%s" % (etc.properties.srchome, w_file_name )
+    try:
+        cc_file = open(fn)
+        cc_json = json.load(cc_file)
+        return cc_json
+    except:
+        raise
+        return "{'error': 'could not load file %s}'" % (fn)
+### end json_load
 
 if __name__ == "__main__":
     #for x in range(1,10):
