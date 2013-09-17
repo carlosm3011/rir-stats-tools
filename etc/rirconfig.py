@@ -50,9 +50,13 @@ rir_config_data = { 'lacnic':
                          'dlge': ["ftp://ftp.lacnic.net/pub/stats/apnic/delegated-apnic-extended-latest", "data/delegated-apnic-extended-latest"] },                    
                     'ripencc':
                         {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/ripencc/delegated-ripencc-latest", "data/delegated-ripencc-latest"], 
-                         'dlge': ["ftp://ftp.lacnic.net/pub/stats/ripencc/delegated-ripencc-extended-latest", "data/delegated-ripencc-extended-latest"] },                    
+                         'dlge': ["ftp://ftp.lacnic.net/pub/stats/ripencc/delegated-ripencc-extended-latest", "data/delegated-ripencc-extended-latest"],
+                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/latest/ripe-ncc.tal-roa-prefixes.csv'],
+                         'countrydata': json_load('etc/ripencc_region.json')
+                    },
                     'arin':
                         {'dlg1': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-latest", "data/delegated-arin-latest"],
+                         'dlge': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest", "data/delegated-arin-extended-latest"],
                          'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/latest/arin.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/arin_region.json')                         
                          },                    

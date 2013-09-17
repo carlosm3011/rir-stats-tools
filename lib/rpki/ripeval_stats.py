@@ -93,7 +93,15 @@ class BatchValidationResults:
                     record['uri'] = row[0].strip()
                     record['origin_as'] = row[1].strip()[2:]
                     record['prefix'] = row[2].strip()
-                    record['max_len'] = int(row[3].strip())
+                    if row[3] != '':
+                        record['max_len'] = int(row[3].strip())
+                    else:
+                        try:
+                            prefix_parts = record['prefix'].split("/")
+                            record['max_len'] = prefix_parts[1]
+                        except:
+                            sys.stderr.write("\nrecord: %s \nprefix:%s \nprefix_parts: %s\n" % (str(row), record['prefix'], str(prefix_parts)) )
+                            raise
                     record['valid_from'] = row[4].strip()
                     record['valid_until'] = row[5].strip()
                     record['istart'] = 0
