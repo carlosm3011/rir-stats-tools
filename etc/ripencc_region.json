@@ -145,10 +145,11 @@
         },
         "IQ": {
             "name": "Iraq"
+        },
+        
+        "EU": {
+            "name": "Generic CC for orgs who prefer not to claim a specific country"
         }
-        
-        
-        
 
     }
 }
