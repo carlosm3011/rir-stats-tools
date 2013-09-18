@@ -27,8 +27,11 @@ class Test(unittest.TestCase):
         pass
     
     def testRowInsertion(self):
-        r = self.s3l._insert_row({'name': 'marcelo', 'age': 41, 'weight': 125})
+        r = self.s3l._insert_row({'name': 'marcelo', 'age': 41, 'weight': 125.0})
         self.assertTrue(r, "record not inserted succesfully")
+        
+    def testRowRetrieval(self):
+        r = self.
         
     def testRowCount1(self):
         r = self.s3l.get_rowcount()
