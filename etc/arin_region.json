@@ -1,0 +1,17 @@
+{
+    "date-created": "20130916",
+    "country-codes": {
+        "AI": {
+            "name": "Anguilla"
+        },
+        "AG": {
+            "name": "Antigua y Barbuda"
+        },        
+        "US": {
+            "name": "United States of America"
+        },
+        "CA": {
+            "name": "Canada"
+        }   
+    }     
+}

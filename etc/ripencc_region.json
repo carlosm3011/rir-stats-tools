@@ -1,0 +1,155 @@
+{
+    "date-created": "20130916",
+    "country-codes": {
+        "AD": {
+            "name": "Andorra"
+        },
+        "AM": {
+            "name": "Armenia"
+        },
+        "AT": {
+            "name": "Austria"
+        },
+        "AZ": {
+            "name": "Azerbaijan"
+        },
+        "BH": {
+            "name": "Bahrain"
+        },
+        "BY": {
+            "name": "Belarus"
+        },
+        "BE": {
+            "name": "Belgium"
+        },
+        "BA": {
+            "name": "Bosnia & Herzegovina"
+        },
+        "BG": {
+            "name": "Bulgaria"
+        },
+        "HR": {
+            "name": "Croatia"
+        },
+        "CY": {
+            "name": "Cyprus"
+        },
+        "CZ": {
+            "name": "Czech Republic"
+        },
+        "DK": {
+            "name": "Denmark"
+        },
+        "EE": {
+            "name": "Estonia"
+        },
+        "FI": {
+            "name": "Finland"
+        },
+        "FR": {
+            "name": "France"
+        },
+        "GE": {
+            "name": "Georgia"
+        },
+        "DE": {
+            "name": "Germany"
+        },
+        "NL": {
+            "name": "Netherlands"
+        }, 
+        "RU": {
+            "name": "Russia"
+        },
+        "UK": {
+            "name": "United Kingdom"
+        },
+        "IT": {
+            "name": "Italy"
+        },
+        "SE": {
+            "name": "Sweden"
+        },
+        "CH": {
+            "name": "Switzerland"
+        },
+        "GB": {
+            "name": "Great Britain"
+        },
+        "UA": {
+            "name": "United Arab Emirates"
+        },
+        "ES": {
+            "name": "Spain"
+        },
+        "PT": {
+            "name": "Portugal"
+        },            
+        "PL": {
+            "name": "Poland"
+        },    
+        "NO": {
+            "name": "Norway"
+        },    
+        "KZ": {
+            "name": "Kazakhstan"
+        },
+        "IE": {
+            "name": "Ireland"
+        },
+        "TR": {
+            "name": "Turkey"
+        },    
+        "IL": {
+            "name": "Israel"
+        },
+        "KW": {
+            "name": "Kuwait"
+        },    
+        "LV": {
+            "name": "Latvia"
+        },
+        "GR": {
+            "name": "Greece"
+        },
+        "SK": {
+            "name": "Slovakia"
+        },    
+        "HU": {
+            "name": "Hungary"
+        },
+        "LU": {
+            "name": "Luxembourg"
+        },
+        "IR": {
+            "name": "Iran"
+        },
+        "RO": {
+            "name": "Romania"
+        },
+        "JO": {
+            "name": "Jordan"
+        },
+        "PS": {
+            "name": "Palestine"
+        },
+        
+        "LT": {
+            "name": "Lithuania"
+        },
+        "IS": {
+            "name": "Iceland"
+        },
+        "SI": {
+            "name": "Slovenia"
+        },
+        "IQ": {
+            "name": "Iraq"
+        },
+        
+        "EU": {
+            "name": "Generic CC for orgs who prefer not to claim a specific country"
+        }
+
+    }
+}

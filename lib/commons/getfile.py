@@ -31,31 +31,40 @@ import os
 import sys
 import time
 from commons.dprint import dprint
+from commons.utils import get_tmp_file_name
 #
 
 
 ## get file ########################################################################
-def getfile(w_url, w_file, w_update = 3600, ch_size=10*1024):
+def getfile(w_url, w_file_name = None, w_update = 3600, ch_size=10*1024):
     """
-    Downloads a file object pointed by w_url and stores it on local file w_file.
+    Downloads a file object pointed by w_url and stores it on local file w_file_name.
     The w_update parameter marks how old the file can be. Files are only downloaded 
     if they are older than w_update seconds.
     
     :param w_url: URL of the file to get. All urllib2 URLs are supported, including file:///
     :param w_update: Freshness timer in seconds. If the file was downloeaded less than this time ago the current copy is used, 
-                        thus avoiding unnecessary repeated downloads.
+                        thus avoiding unnecessary re-downloading files.
+    :param w_file_name: Full file name and path of the locally-saved copy of the file. This parameter can be empty. In this case 
+                        getfile will choose a random temp file name and, on success, will return this name
     :param ch_size: Progress bar ticker step.
     
+    :return : file name of the locally-save copy.
+    
     """
+    
+    if w_file_name == None:
+        w_file_name = get_tmp_file_name()
+    
     try:
         dprint("Getting "+w_url+": ")
         mtime = 0
-        if os.path.exists(w_file):
-            mtime = os.stat(w_file).st_mtime
+        if os.path.exists(w_file_name):
+            mtime = os.stat(w_file_name).st_mtime
         now = time.time()
         if now-mtime >= w_update:
             uh = urllib2.urlopen(w_url)
-            lfh = open(w_file, "wb+")
+            lfh = open(w_file_name, "wb+")
             # lfh.write(uh.read())
             while True:
                 data = uh.read(ch_size)
@@ -64,9 +73,11 @@ def getfile(w_url, w_file, w_update = 3600, ch_size=10*1024):
                     break
                 lfh.write(data)
                 sys.stderr.write(".")
+            #
+            return w_file_name
         else:
             dprint("File exists and still fresh (%s secs old) \n" % (now-mtime) )
-            return True
+            return w_file_name
     except urllib2.URLError as e:
         raise
         print "URL Error", e.code, w_url
