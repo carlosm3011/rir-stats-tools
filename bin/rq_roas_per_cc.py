@@ -9,13 +9,14 @@ import etc.rirconfig
 class RoaQuery():
 
 	def __init__(self, w_rir, w_extra):
-		#self.ccs = ['AR', 'UY', 'CL', 'EC', 'PE', 'CO', 'VE', 'BO', 'PY', 'PA', 'CR', 'HN', 'CU', 'DO', 
-		#			'SV', 'CW', 'AN', 'TT', 'BZ', 'NI', 'GT']
 		
 		if not w_extra:
-			self.ccs = etc.rirconfig.rir_config_data[w_rir]['countrydata']['country-codes'].keys()
+			# self.ccs = etc.rirconfig.rir_config_data[w_rir]['countrydata']['country-codes'].keys()
+			self.ccs = []
+			self.learn_ccs = True
 		else:
 			self.ccs = [w_extra]
+			self.learn_ccs = False
 		
 		self.counts = {}
 		self.counts4 = {}
@@ -31,7 +32,12 @@ class RoaQuery():
 		if dlg_row['cc'] in self.ccs:
 			return True
 		else:
-			return False
+			# si tengo que aprender country codes, entonces lo agrego
+			if self.learn_ccs:
+				self.ccs.append(dlg_row['cc'])
+				return True
+			else:
+				return False
 
 	def roa_match(self, dlg_row, drec):
 		try:
@@ -62,4 +68,4 @@ class RoaQuery():
 		print "\n"
 		print "Total IPv4 /24s for all CCs: %s" % self.allccs4
 		print "Total IPv6 /32s for all CCs: %s" % self.allccs6
-		
+		#
