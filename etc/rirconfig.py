@@ -35,9 +35,9 @@ from commons.utils import json_load
 
 # rirs and their files
 rir_config_data = { 'lacnic': 
-                        {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest", "data/delegated-lacnic-latest"],
-                         'dlge': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest", "data/delegated-lacnic-extended-latest"],
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/latest/lacnic.tal-roa-prefixes.csv'],
+                        {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-%s", "data/delegated-lacnic-latest"],
+                         'dlge': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-%s", "data/delegated-lacnic-extended-latest"],
+                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/lacnic.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/lacnic_region.json')
                         },
                     'afrinic':
@@ -55,8 +55,8 @@ rir_config_data = { 'lacnic':
                          'countrydata': json_load('etc/ripencc_region.json')
                     },
                     'arin':
-                        {'dlg1': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-latest", "data/delegated-arin-latest"],
-                         'dlge': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest", "data/delegated-arin-extended-latest"],
+                        {'dlg1': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-%s", "data/delegated-arin-latest"],
+                         'dlge': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-extended-%s", "data/delegated-arin-extended-latest"],
                          'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/latest/arin.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/arin_region.json')                         
                          },                    

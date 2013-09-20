@@ -85,6 +85,8 @@ USAGE
     print program_banner
     # Setup argument parser
     parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
+    parser.add_argument("-d", "--date", dest="date", help="Date or latest. [default: %(default)s]", metavar="DATE", default='latest' )
+    parser.add_argument("-e", "--extra", dest="extra", help="Extra arguments to be passed to the RoaQuery instance. [default: %(default)s]", metavar="DATE", default=None )
     parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RIR" )
     parser.add_argument("-q", "--file-query", dest="filequery", help="Python-like query to be read from file and run via eval(). [default: %(default)s]", metavar="QUERY" )
     parser.add_argument('-V', '--version', action='version', version=program_version_message)
@@ -112,7 +114,7 @@ USAGE
         execfile(filequery, globals(), fq_locals )
         try:
             rq_class = fq_locals['RoaQuery']
-            roa_query_in = rq_class(rir)
+            roa_query_in = rq_class(rir, args.extra)
         except:
             raise
         #===================================================================
@@ -136,10 +138,9 @@ USAGE
     sk = commons.statkeeper.statkeeper()
     
     # get delegated
-    dp.log("Downloading stat file for RIR %s..." % (rir))
-    dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-latest" % (rir))
-    # commons.getfile.getfile("ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest", dlg_tmpfile, 43200)
-    dlg_tmpfile = commons.getfile.getfile(etc.rirconfig.rir_config_data[rir]['dlge'][0], dlg_tmpfile, 43200)
+    dp.log("Downloading stat file for RIR %s, date %s..." % (rir, args.date))
+    dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-%s" % (rir, args.date))
+    dlg_tmpfile = commons.getfile.getfile( etc.rirconfig.rir_config_data[rir]['dlge'][0] % (args.date), dlg_tmpfile, 43200)
     dp.log(" OK\n")
     
     dp.log("Importing delegated stats in memory... ")
@@ -147,10 +148,9 @@ USAGE
     dlg_api.read_delegated()
     dp.log(" OK\n")        
     
-    dp.log("Dowloading validator output... ")
-    dlg_tmpfile = commons.utils.get_tmp_file_name("%s-roa-prefixes.csv" % (rir))
-    #commons.getfile.getfile("http://ripeval.labs.lacnic.net/rpki/batch-validation/latest/lacnic.tal-roa-prefixes.csv", dlg_tmpfile, 3600)
-    commons.getfile.getfile(etc.rirconfig.rir_config_data[rir]['roaexport'][0], dlg_tmpfile, 3600)    
+    dp.log("Dowloading validator output for RIR %s, date %s... " % (rir, args.date))
+    dlg_tmpfile = commons.utils.get_tmp_file_name("%s-roa-prefixes-%s.csv" % (rir, args.date))
+    commons.getfile.getfile(etc.rirconfig.rir_config_data[rir]['roaexport'][0] % (args.date), dlg_tmpfile, 3600)    
     dp.log(" OK\n")
     
     dp.log("Importing RIPE validator output for RIR %s... " % (rir))
