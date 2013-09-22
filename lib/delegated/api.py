@@ -84,19 +84,22 @@ class Delegated:
         csv_r = csv.reader(self.file, delimiter="|")
         
         # load version line
-        try:
-            row = csv_r.next() 
-            if string.find(str(row), "#") == -1:
-                self.version_line['version'] = row[0].strip()
-                self.version_line['registry'] = row[1].strip()
-                self.version_line['serial'] = row[2].strip()
-                self.version_line['records'] = row[3].strip()
-                self.version_line['startdate'] = row[4].strip()
-                self.version_line['enddate'] = row[4].strip()
-                self.version_line['UTCoffset'] = row[5].strip()
-        except IndexError as e:
-            dprint("Error importing line: [%s]\n" % (row))
-            sys.exit(1)
+        while True:
+            try:
+                row = csv_r.next() 
+                if string.find(str(row), "#") == -1:
+                    self.version_line['version'] = row[0].strip()
+                    self.version_line['registry'] = row[1].strip()
+                    self.version_line['serial'] = row[2].strip()
+                    self.version_line['records'] = row[3].strip()
+                    self.version_line['startdate'] = row[4].strip()
+                    self.version_line['enddate'] = row[4].strip()
+                    self.version_line['UTCoffset'] = row[5].strip()
+                    break
+            except IndexError as e:
+                dprint("Error importing line: [%s]\n" % (row))
+                sys.exit(1)
+        ##
         
         # load summary lines
         if string.find(str(row), "#") == -1:
@@ -146,6 +149,9 @@ class Delegated:
                                     " :prefix, :istart, :iend)", record)
                 #
                 row = csv_r.next()
+            except ValueError:
+                sys.stderr.write('ERROR parsing line from delegated file: %s\n' % (row))
+                raise
             except IndexError:
                 # print "*"
                 row = csv_r.next()
