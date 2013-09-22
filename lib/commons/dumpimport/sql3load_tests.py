@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
 
 
     def setUp(self):
-        sys.stderr.write("Creating Sql3Load class instance")
+        sys.stderr.write("Creating Sql3Load class instance\n")
         self.s3_template = {'name': 'text', 'age': 'integer', 'weigth': 'real'}
         self.s3l = Sql3Load(self.s3_template)
     ## end
@@ -31,7 +31,12 @@ class Test(unittest.TestCase):
         self.assertTrue(r, "record not inserted succesfully")
         
     def testRowRetrieval(self):
-        r = self.
+        r = self.s3l.query("1=1")
+        self.assertTrue(r, 'query did not return a valid value')
+        dr = dict(r)
+        sys.stderr.write("%s" % (dr))
+        self.assertTrue( dr['age'] == 41, 'age should be 41' )
+        pass
         
     def testRowCount1(self):
         r = self.s3l.get_rowcount()

@@ -46,7 +46,7 @@ class Sql3Load(object):
     def _insert_row(self, w_record):
         r = False
         try:
-            sql = "INSERT INTO %s VALUES (1, 'marce', 10, 11)" % (self.table_name)
+            sql = "INSERT INTO %s VALUES (1, 'marce', 10, 11.0)" % (self.table_name)
             self.cursor.execute(sql)
             self.conn.commit()
             r = True
@@ -69,8 +69,28 @@ class Sql3Load(object):
     ## end
     
     ## begin
-    def query(self, w_query):
-        pass
+    def query(self, w_query, w_parameters = {}):
+        """
+        Runs an arbitrary SQL query against the in-memory database.
+        
+        :param w_query: the query itself (what comes after the WHERE SQL keyword) using named parameters for column values, as in:
+                        'origin_as=:oas'
+                        
+        :param w_parameters: an associative array with parameter values. Must be consistent with the names used for wquery, as in:
+                            {'oas': '28000'}
+        """
+        sql = "SELECT * FROM %s WHERE %s" % (self.table_name, w_query)
+        try:
+            qr = self.cursor.execute(sql, w_parameters)
+            ar = []
+            for x in qr:
+                ar.append(dict(x))
+            return ar
+        except sqlite3.Error as e:
+            raise
+            return None
+        except:
+            raise
     ## end
     
     
