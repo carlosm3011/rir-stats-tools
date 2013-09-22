@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -59,6 +57,7 @@
 <span class="kn">import</span> <span class="nn">etc.properties</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="c">### begin</span>
 <div class="viewcode-block" id="get_tmp_file_name"><a class="viewcode-back" href="../../commons.html#commons.utils.get_tmp_file_name">[docs]</a><span class="k">def</span> <span class="nf">get_tmp_file_name</span><span class="p">(</span><span class="n">w_name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
@@ -76,6 +75,18 @@
     <span class="k">return</span> <span class="n">tmp_file</span>
 
 <span class="c">### end</span>
+
+<span class="c">### begin</span></div>
+<div class="viewcode-block" id="json_load"><a class="viewcode-back" href="../../commons.html#commons.utils.json_load">[docs]</a><span class="k">def</span> <span class="nf">json_load</span><span class="p">(</span><span class="n">w_file_name</span><span class="p">):</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">etc</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">srchome</span><span class="p">,</span> <span class="n">w_file_name</span> <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cc_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="n">cc_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cc_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cc_json</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span>
+        <span class="k">return</span> <span class="s">&quot;{&#39;error&#39;: &#39;could not load file </span><span class="si">%s</span><span class="s">}&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="c">### end json_load</span>
 </div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="c">#for x in range(1,10):</span>
@@ -120,7 +131,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b2.
     </div>
   </body>
 </html>
