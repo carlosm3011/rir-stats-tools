@@ -13,19 +13,22 @@ class Sql3Load(object):
     '''
     
     ### begin
-    def __init__(self, w_record_tpl):
+    def __init__(self, w_record_tpl, w_file_name = None):
         self.table_name = "imported_data"
         '''
         Default constructor
         :param w_record_tpl : record template, a dictionary with the format {'col name': 'col type'} where
                                 col_type is a valid sqlite3 type.
+        :param w_file_name  : file name for the database. If None the database will be created in RAM.
         '''
         #
         self.record_tpl = w_record_tpl
         #
         try:
-            #self.conn = sqlite3.connect('/tmp/res.db')
-            self.conn = sqlite3.connect(':memory:')
+            if w_file_name:
+                self.conn = sqlite3.connect(w_file_name)
+            else:
+                self.conn = sqlite3.connect(':memory:')
             self.conn.row_factory = sqlite3.Row
             self.cursor = self.conn.cursor()
             # self.cursor.execute(''' CREATE TABLE roapfx (uri text, origin_as text, prefix text, max_len int,  ''' + 
