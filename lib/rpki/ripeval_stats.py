@@ -32,6 +32,8 @@ import sys
 import csv
 import sqlite3
 import string
+import ipaddr
+import math
 
 ### BEGIN
 class BatchValidationResults:
@@ -104,8 +106,20 @@ class BatchValidationResults:
                             raise
                     record['valid_from'] = row[4].strip()
                     record['valid_until'] = row[5].strip()
-                    record['istart'] = 0
-                    record['iend'] = 0
+                    
+                    #record['istart'] = 0
+                    #record['iend'] = 0
+                    
+                    pfx = ipaddr.IPNetwork(record['prefix'])                    
+                    if pfx.version == 4:
+                        record['istart'] = int(pfx.network)
+                        record['iend'] = int(pfx.broadcast)
+                    elif pfx.version == 6:
+                        pfx_norm_base = pow(2,64)
+                        record['istart'] = int(pfx.network) / pfx_norm_base
+                        record['iend'] = int(pfx.broadcast) / pfx_norm_base                    
+                    
+                    
                     # insert into db
                     #print(record)
                     try:

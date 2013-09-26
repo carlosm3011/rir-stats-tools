@@ -32,11 +32,13 @@ program_version_message = "Version %s, released %s, changed %s" % (program_versi
 class DelegatedShell(cmd.Cmd):
     
     intro = "Welcome to the Delegated-Stats shell. Type ? for help."
-    prompt = "(dlg: latest)"
+    prompt = "(dlg-lacnic: latest)"
+    rir = 'lacnic'
     
-    def __init__(self, w_dlg_api):
-        self.dlgapi = w_dlg_api
+    def __init__(self):
+        #self.dlgapi = w_dlg_api
         #super(DelegatedShell, self).__init__()
+        self.do_load('latest')
         cmd.Cmd.__init__(self)
     
     def do_info(self, line):
@@ -64,6 +66,28 @@ class DelegatedShell(cmd.Cmd):
                 c = c + 1
         except:
             print "Error - cmd was: %s " % (sql)
+            
+    #
+    def do_load(self, line):
+        """
+        Load delegated file for given date (YYYYMMDD|latest)
+        """
+        # get delegated
+        ddate = line
+        dp.log("Downloading stat file for RIR %s, date %s..." % (self.rir, ddate))
+        dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-%s" % (self.rir, ddate))
+        dlg_tmpfile = commons.getfile.getfile( etc.rirconfig.rir_config_data[rir]['dlge'][0] % (ddate), dlg_tmpfile, 43200)
+        dp.log(" OK\n")
+        
+        dp.log("Importing delegated stats in memory... ")
+        self.dlgapi = None
+        self.dlgapi = delegated.api.Delegated(dlg_tmpfile)
+        self.dlgapi.read_delegated()
+        dp.log(" OK\n")
+        
+        self.prompt = "(dlg-%s: %s)" % (self.rir, ddate)
+    # end          
+        
 #####################################################
 
 ## main
@@ -84,19 +108,8 @@ if __name__ == "__main__":
     parser.add_argument(dest="query", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="query", nargs='?')  
     
     args = parser.parse_args()  
-    rir = args.rir
-    
-    # get delegated
-    dp.log("Downloading stat file for RIR %s, date %s..." % (rir, args.date))
-    dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-%s" % (rir, args.date))
-    dlg_tmpfile = commons.getfile.getfile( etc.rirconfig.rir_config_data[rir]['dlge'][0] % (args.date), dlg_tmpfile, 43200)
-    dp.log(" OK\n")
-    
-    dp.log("Importing delegated stats in memory... ")
-    dlg_api = delegated.api.Delegated(dlg_tmpfile)
-    dlg_api.read_delegated()
-    dp.log(" OK\n")        
+    rir = args.rir      
     
     # start shell
-    cli = DelegatedShell(dlg_api)
+    cli = DelegatedShell()
     cli.cmdloop()
