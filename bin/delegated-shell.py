@@ -28,16 +28,31 @@ release_date = "2013-09-25"
 changed_date = "2013-09-25"
 program_version_message = "Version %s, released %s, changed %s" % (program_version, release_date, changed_date)
 
-## delegated shell
+## delegated shell ##################################
 class DelegatedShell(cmd.Cmd):
-    def do_greet(self, line):
-        print "Hello!"
+    
+    def __init__(self, w_dlg_api):
+        self.dlgapi = w_dlg_api
+        super(DelegatedShell, self).__init__()
+    
+    def do_info(self, line):
+        print "Hello! This is the delegated-shell version %s" % (program_version)
+        print "(c) carlos@lacnic.net, released %s" % (release_date)
     #
     def do_EOF(self, line):
         return True
     #
     def do_echo(self, line):
         print "entered line was %s" % (line)
+        
+    #
+    def do_query(self, line):
+        rx = self.dlgapi.resource_query(line)
+        c = 0
+        for row in rx:
+            print "R%s: %s" % (c, row)
+            c = c + 1
+#####################################################
 
 ## main
 if __name__ == "__main__":
@@ -71,5 +86,5 @@ if __name__ == "__main__":
     dp.log(" OK\n")        
     
     # start shell
-    cli = DelegatedShell()
+    cli = DelegatedShell(dlg_api)
     cli.cmdloop()
