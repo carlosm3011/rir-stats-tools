@@ -31,9 +31,13 @@ program_version_message = "Version %s, released %s, changed %s" % (program_versi
 ## delegated shell ##################################
 class DelegatedShell(cmd.Cmd):
     
+    intro = "Welcome to the Delegated-Stats shell. Type ? for help."
+    prompt = "(dlg: latest)"
+    
     def __init__(self, w_dlg_api):
         self.dlgapi = w_dlg_api
-        super(DelegatedShell, self).__init__()
+        #super(DelegatedShell, self).__init__()
+        cmd.Cmd.__init__(self)
     
     def do_info(self, line):
         print "Hello! This is the delegated-shell version %s" % (program_version)
@@ -46,12 +50,20 @@ class DelegatedShell(cmd.Cmd):
         print "entered line was %s" % (line)
         
     #
-    def do_query(self, line):
-        rx = self.dlgapi.resource_query(line)
+    def emptyline(self):
+        pass
+    
+    #
+    def do_select(self, line):
+        sql = "select %s" % (line)
+        rx = self.dlgapi.raw_query(sql, {'tblname': 'resources'})
         c = 0
-        for row in rx:
-            print "R%s: %s" % (c, row)
-            c = c + 1
+        try:
+            for row in rx:
+                print "R%s: %s" % (c, dict(row) )
+                c = c + 1
+        except:
+            print "Error - cmd was: %s " % (sql)
 #####################################################
 
 ## main

@@ -170,7 +170,7 @@ class Delegated:
     ### BEGIN
     def resource_query(self, query, parameters):
         """
-        runs a generic query returning a db cursor
+        runs a select query returning a db cursor
         """
         try:            
             #
@@ -185,6 +185,27 @@ class Delegated:
             return None
         except:
             raise  
+    ### END
+    
+    ### BEGIN
+    def raw_query(self, w_sql, w_parameters = {}):
+        """
+        runs a GENERIC sql query returning a db cursor
+        """
+        try:            
+            #
+            # sql1 = "SELECT * FROM resources WHERE %s" % (query)
+            sql1 = w_sql
+            res = self.cursor.execute(sql1, w_parameters)
+            if res:
+                return res
+            else:
+                return None
+        except sqlite3.DatabaseError as e:
+            dprint("SQL error: %s" % (sql1) )
+            return None
+        except:
+            raise          
     ### END
 
     ### BEGIN
