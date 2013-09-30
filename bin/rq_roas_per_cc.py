@@ -55,8 +55,6 @@ class RoaQuery():
 					self.prefixes4[dlg_row['cc']].append(ipaddr.IPv4Network(drec['prefix']))
 					# sys.stderr.write("%s\n" % ( dict(drec) ))
 			elif dlg_row['type'] == 'ipv6':
-					#v6blocks = pow(2, 32-int(dlg_row['value'])) 
-					#self.totals6[dlg_row['cc']] = self.totals6.get(dlg_row['cc'], 0) + v6blocks
 					self.prefixes6[dlg_row['cc']].append(ipaddr.IPv6Network(drec['prefix']))
 					#self.allccs6 = self.allccs6 + v6blocks
 		except IndexError:
@@ -81,10 +79,10 @@ class RoaQuery():
 		for cc in self.prefixes6.keys():
 			pfx6_summarized = ipaddr.collapse_address_list(self.prefixes6[cc])
 			for p in pfx6_summarized:
-				v6blocks = math.log( (int(p.broadcast) - int(p.network)), 2)
+				v6blocks = pow(2,32) / pow(2, p.prefixlen)
+				# v6blocks = 0
 				self.totals6[cc] = self.totals6.get(cc, 0) + v6blocks
-				self.allccs4 = self.allccs4 + v6blocks
-		
+				self.allccs6 = self.allccs6 + v6blocks
 		
 		# summarize
 		print "\n"
