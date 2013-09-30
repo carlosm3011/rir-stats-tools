@@ -81,7 +81,7 @@ class RoaQuery():
 		for cc in self.prefixes6.keys():
 			pfx6_summarized = ipaddr.collapse_address_list(self.prefixes6[cc])
 			for p in pfx6_summarized:
-				v6blocks = (int(p.broadcast) - int(p.network)) / pow(2,64) 
+				v6blocks = math.log( (int(p.broadcast) - int(p.network)), 2)
 				self.totals6[cc] = self.totals6.get(cc, 0) + v6blocks
 				self.allccs4 = self.allccs4 + v6blocks
 		
