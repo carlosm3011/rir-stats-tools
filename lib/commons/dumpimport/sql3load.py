@@ -6,6 +6,7 @@ Created on Sep 18, 2013
 
 import sqlite3
 import commons.statkeeper
+import sys
 
 class Sql3Load(object):
     '''
@@ -23,6 +24,7 @@ class Sql3Load(object):
         '''
         #
         self.record_tpl = w_record_tpl
+        self.columns= []
         #
         try:
             if w_file_name:
@@ -33,11 +35,15 @@ class Sql3Load(object):
             self.cursor = self.conn.cursor()
             # self.cursor.execute(''' CREATE TABLE roapfx (uri text, origin_as text, prefix text, max_len int,  ''' + 
             #                    ''' valid_from text, valid_until text, istart unsigned big int, iend unsigned big int) ''')
-            self.cursor.execute(" CREATE TABLE %s (id INTEGER PRIMARY KEY)" % (self.table_name) )
+            self.cursor.execute(" DROP TABLE IF EXISTS %s" % (self.table_name) )
+            self.conn.commit()
+            
+            self.cursor.execute(" CREATE TABLE IF NOT EXISTS %s (id INTEGER PRIMARY KEY)" % (self.table_name) )
             
             # loop and add columns
             for col_name in w_record_tpl.keys():
                 sql = "ALTER TABLE %s ADD COLUMN %s %s" % (self.table_name, col_name, w_record_tpl[col_name])
+                self.columns.append(col_name)
                 self.cursor.execute(sql)
             
             self.conn.commit()
@@ -46,12 +52,20 @@ class Sql3Load(object):
     ### end
     
     ## begin
+    def __del__(self):
+        self.conn.close()
+    ## end
+    
+    ## begin
     def _insert_row(self, w_record):
         r = False
         try:
-            sql = "INSERT INTO %s VALUES (1, 'marce', 10, 11.0)" % (self.table_name)
-            self.cursor.execute(sql)
-            self.conn.commit()
+            # sql = "INSERT INTO %s (id, name, age, weigth) VALUES (1, 'marce', 10, 121.0)" % (self.table_name)
+            # sql = "INSERT INTO %s (%s) VALUES ('marce', 10, 121.0)" % (self.table_name, ",".join(self.columns)  )
+            sql = "INSERT INTO %s (%s) VALUES (%s)" % (self.table_name, ",".join(self.columns), ",".join([ ':'+x for x in self.columns ])  )
+            # sys.stderr.write(sql)
+            self.cursor.execute(sql, w_record)
+            # self.conn.commit()
             r = True
         except:
             raise
@@ -63,7 +77,7 @@ class Sql3Load(object):
         sql = "SELECT count(*) AS CNT FROM %s" % (self.table_name)
         r1 = self.cursor.execute(sql)
         row = r1.fetchone()
-        return dict(row)
+        return dict(row)['CNT']
     ## end
     
     ## begin
@@ -94,6 +108,23 @@ class Sql3Load(object):
             return None
         except:
             raise
+    ## end
+    
+    ## begin
+    def importFile(self, w_file_name):
+        '''
+        Load ROA data from RIPE batch validator CSV output. 
+        
+        :param w_fname: file name of the CSV file to import. 
+        '''
+        # init variables
+        try:
+            self.file = open(w_file_fname, 'rb')
+            self._stats = {}        
+            csv_r = csv.reader(self.file, delimiter=",")
+            # row = True
+            for row in csv_r:
+        
     ## end
     
     

@@ -70,7 +70,7 @@ class DelegatedShell(cmd.Cmd):
     #
     def do_load(self, line):
         """
-        Load delegated file for given date (YYYYMMDD|latest)
+        Load delegated-stats file and current RIR for given date (YYYYMMDD|latest)
         """
         # get delegated
         ddate = line
