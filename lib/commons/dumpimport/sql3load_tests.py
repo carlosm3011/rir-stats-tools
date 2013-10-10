@@ -10,12 +10,14 @@ import uuid
 from commons.utils import tempfile 
 from commons.dumpimport.sql3load import Sql3Load
 
+
 class Test(unittest.TestCase):
 
 
     def setUp(self):
-        sys.stderr.write("Creating Sql3Load class instance\n")
-        self.s3_template = {'name': 'text', 'age': 'integer', 'weigth': 'float'}
+        #sys.stderr.write("Creating Sql3Load class instance\n")
+        self.s3_template = [{'name': 'text'}, {'age': 'integer'}, {'weigth': 'float'}]
+        self.s3_template = [ ('name', 'text'), ('age', 'integer'), ('weigth', 'float') ]
         #se    lf.s3l = Sql3Load(self.s3_template)
         self.s3l = Sql3Load(self.s3_template, "tmp/%s.db" % ( str(uuid.uuid4()))[:8] )
     ## end
@@ -44,12 +46,16 @@ class Test(unittest.TestCase):
         self.assertTrue( dr['age'] == 41, 'age should be 41' )
         pass
     
-    def testImportFile(self):
+    def testImportCommaSeparatedFile(self):
         r = self.s3l.importFile("tmp/test-import.txt")
         self.assertTrue(r>0, "Number of lines read should be larger than 0 but is %s" % (r))
         #
-        r = self.s3l.query("name = 'marce'")
-        self.assertTrue(r[0]['age']==41, "marce's age should be 41 but is %s" % (r[0]['age']))
+        r = self.s3l.query("name = 'marcelo'")
+        self.assertTrue(r[0]['age']==41, "marcelo's age should be 41 but is %s" % (r[0]['age']))
+        
+    def testImportTabSeparatedFile(self):
+        r = self.s3l.importFile("tmp/test-import2.txt", '\t')
+        self.assertTrue(r>0, "Number of lines read should be larger than 0 but is %s" % (r))
         
     #def testRowCount1(self):
     #    r = self.s3l.get_rowcount()
