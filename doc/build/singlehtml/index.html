@@ -132,25 +132,25 @@ if filename is None then a random name is created</p>
 <p>Created on Sep 18, 2013</p>
 <p>&#64;author: marcelo</p>
 <dl class="class">
-<dt id="commons.dumpimport.sql3load.Sql3Load">
-<em class="property">class </em><tt class="descclassname">commons.dumpimport.sql3load.</tt><tt class="descname">Sql3Load</tt><big>(</big><em>w_record_tpl</em>, <em>w_file_name=None</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load" title="Permalink to this definition">¶</a></dt>
+<dt id="commons.dumpimport.sql3load.sql3load">
+<em class="property">class </em><tt class="descclassname">commons.dumpimport.sql3load.</tt><tt class="descname">sql3load</tt><big>(</big><em>w_record_tpl</em>, <em>w_file_name=None</em><big>)</big><a class="headerlink" href="#commons.dumpimport.sql3load.sql3load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This class implements a generic delimited text file importer into an sqlite3 backend. Allows for limited, SQL-like querying.</p>
 <dl class="method">
-<dt id="commons.dumpimport.sql3load.Sql3Load.getStats">
-<tt class="descname">getStats</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.getStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.getStats" title="Permalink to this definition">¶</a></dt>
+<dt id="commons.dumpimport.sql3load.sql3load.getStats">
+<tt class="descname">getStats</tt><big>(</big><big>)</big><a class="headerlink" href="#commons.dumpimport.sql3load.sql3load.getStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary with all collected statistics</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="commons.dumpimport.sql3load.Sql3Load.get_rowcount">
-<tt class="descname">get_rowcount</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.get_rowcount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.get_rowcount" title="Permalink to this definition">¶</a></dt>
+<dt id="commons.dumpimport.sql3load.sql3load.get_rowcount">
+<tt class="descname">get_rowcount</tt><big>(</big><big>)</big><a class="headerlink" href="#commons.dumpimport.sql3load.sql3load.get_rowcount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current number of rows in the in-memory database.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="commons.dumpimport.sql3load.Sql3Load.importFile">
-<tt class="descname">importFile</tt><big>(</big><em>w_file_name</em>, <em>w_delimiter='</em>, <em>'</em>, <em>w_callback=&lt;function &lt;lambda&gt; at 0x108dfc410&gt;</em>, <em>w_callback_steps=10</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.importFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.importFile" title="Permalink to this definition">¶</a></dt>
+<dt id="commons.dumpimport.sql3load.sql3load.importFile">
+<tt class="descname">importFile</tt><big>(</big><em>w_file_name</em>, <em>w_delimiter='</em>, <em>'</em>, <em>w_callback=&lt;function &lt;lambda&gt; at 0x103232398&gt;</em>, <em>w_callback_steps=10</em><big>)</big><a class="headerlink" href="#commons.dumpimport.sql3load.sql3load.importFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports delimiter-separated file into memory database. If the filename ends in &#8216;.gz&#8217;, importFile() 
 will try to open it using the gzip module.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -168,8 +168,8 @@ will try to open it using the gzip module.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="commons.dumpimport.sql3load.Sql3Load.query">
-<tt class="descname">query</tt><big>(</big><em>w_query</em>, <em>w_parameters={}</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.query" title="Permalink to this definition">¶</a></dt>
+<dt id="commons.dumpimport.sql3load.sql3load.query">
+<tt class="descname">query</tt><big>(</big><em>w_query</em>, <em>w_parameters={}</em><big>)</big><a class="headerlink" href="#commons.dumpimport.sql3load.sql3load.query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs an arbitrary SQL query against the in-memory database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

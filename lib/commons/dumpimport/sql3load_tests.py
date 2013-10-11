@@ -8,18 +8,18 @@ import sys
 import uuid
 
 from commons.utils import tempfile 
-from commons.dumpimport.sql3load import Sql3Load
+from commons.dumpimport.sql3load import sql3load
 
 
 class Test(unittest.TestCase):
 
 
     def setUp(self):
-        #sys.stderr.write("Creating Sql3Load class instance\n")
+        #sys.stderr.write("Creating sql3load class instance\n")
         self.s3_template = [{'name': 'text'}, {'age': 'integer'}, {'weigth': 'float'}]
         self.s3_template = [ ('name', 'text'), ('age', 'integer'), ('weigth', 'float') ]
-        #se    lf.s3l = Sql3Load(self.s3_template)
-        self.s3l = Sql3Load(self.s3_template, "tmp/%s.db" % ( str(uuid.uuid4()))[:8] )
+        #se    lf.s3l = sql3load(self.s3_template)
+        self.s3l = sql3load(self.s3_template, "tmp/%s.db" % ( str(uuid.uuid4()))[:8] )
     ## end
 
     def tearDown(self):

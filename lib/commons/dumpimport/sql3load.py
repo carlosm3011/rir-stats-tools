@@ -10,7 +10,7 @@ import commons.statkeeper
 import sys
 import csv
 
-class Sql3Load(object):
+class sql3load(object):
     '''
     This class implements a generic delimited text file importer into an sqlite3 backend. Allows for limited, SQL-like querying.
     '''
@@ -134,7 +134,7 @@ class Sql3Load(object):
         #
         # init variables
         try:
-            if w_file_name.endswidth(".gz"):
+            if w_file_name.endswith(".gz"):
                 self.file = gzip.open(w_file_name)
             else:
                 self.file = open(w_file_name, 'rb')
@@ -145,12 +145,16 @@ class Sql3Load(object):
             for row in csv_r:
                 record = {}  
                 ix = 0
-                for col in self.record_tpl:
-                    record[col[0]] = row[ix].strip()
-                    ix = ix + 1
+                if len(row) == len(self.record_tpl):
+                    for col in self.record_tpl:
+                        record[col[0]] = row[ix].strip()
+                        ix = ix + 1
+                    #
+                    self._insert_row(record)
+                    self.sk.incKey('inserted-rows')
+                else:
+                    self.sk.incKey('invalid-rows')
                 #
-                self._insert_row(record)
-                self.sk.incKey('inserted-rows')
             #
             return ix          
         except:
@@ -166,5 +170,5 @@ class Sql3Load(object):
     ## end
     
     
-## end class Sql3Load
+## end class sql3load
 
