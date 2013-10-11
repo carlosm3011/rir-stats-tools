@@ -2,6 +2,7 @@
 #
 # version 0.1 20121128
 # version 0.2 20130102: addition of two sk's
+# version 0.3 20131011: reset key value
 
 
 #===============================================================================
@@ -61,10 +62,24 @@ class statkeeper():
         return self.keys.get(w_key, 0)
     #
     def getAllKeys(self):
+        '''
+        Returns all available keys in a dictionary
+        '''
         return self.keys
     #
     def getJSON(self):
+        '''
+        Returns all available keys in JSON format
+        '''
         return json.dumps(self.keys)
+    
+    #
+    def setKey(self, w_key, w_value=0):
+        '''
+        Set key value. Defaults to zero.
+        '''
+        self.keys['w_key'] = w_value
+    
     #
     def __repr__(self):
         rs = ""

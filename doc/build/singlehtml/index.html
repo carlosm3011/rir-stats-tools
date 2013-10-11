@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RIR Stat Tools 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="None" href="index.html#document-index" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="index.html#document-index">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-rir-stat-tools-s-documentation">
+<h1>Welcome to RIR Stat Tools&#8217;s documentation!<a class="headerlink" href="#welcome-to-rir-stat-tools-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<span id="document-commons"></span><div class="section" id="lib-commons-module-documentation">
+<h2>lib.commons module documentation<a class="headerlink" href="#lib-commons-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The lib.commons module gropus several utility functions.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="section" id="module-commons.getfile">
+<span id="getfile"></span><h3>getfile<a class="headerlink" href="#module-commons.getfile" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="commons.getfile.getfile">
+<tt class="descclassname">commons.getfile.</tt><tt class="descname">getfile</tt><big>(</big><em>w_url</em>, <em>w_file_name=None</em>, <em>w_update=3600</em>, <em>ch_size=10240</em><big>)</big><a class="reference internal" href="_modules/commons/getfile.html#getfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.getfile.getfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file object pointed by w_url and stores it on local file w_file_name.
+The w_update parameter marks how old the file can be. Files are only downloaded 
+if they are older than w_update seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>w_url</strong> &#8211; URL of the file to get. All urllib2 URLs are supported, including <a class="reference external" href="file:///">file:///</a></li>
+<li><strong>w_update</strong> &#8211; Freshness timer in seconds. If the file was downloeaded less than this time ago the current copy is used, 
+thus avoiding unnecessary re-downloading files.</li>
+<li><strong>w_file_name</strong> &#8211; Full file name and path of the locally-saved copy of the file. This parameter can be empty. In this case 
+getfile will choose a random temp file name and, on success, will return this name</li>
+<li><strong>ch_size</strong> &#8211; Progress bar ticker step.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return : file name of the locally-save copy.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-commons.dprint">
+<span id="dprint"></span><h3>dprint<a class="headerlink" href="#module-commons.dprint" title="Permalink to this headline">¶</a></h3>
+<p>lib.commons.dprint (c) Marcelo 2013
+Generic logging and debug printing utilities.</p>
+<dl class="class">
+<dt id="commons.dprint.dprint">
+<em class="property">class </em><tt class="descclassname">commons.dprint.</tt><tt class="descname">dprint</tt><big>(</big><em>w_sys_loglevel=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="commons.dprint.dprint.log">
+<tt class="descname">log</tt><big>(</big><em>w_msg</em>, <em>w_level=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log message to standard error stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-commons.utils">
+<span id="utils"></span><h3>utils<a class="headerlink" href="#module-commons.utils" title="Permalink to this headline">¶</a></h3>
+<p>Created on Sep 3, 2013</p>
+<p>&#64;author: marcelo</p>
+<dl class="function">
+<dt id="commons.utils.get_tmp_file_name">
+<tt class="descclassname">commons.utils.</tt><tt class="descname">get_tmp_file_name</tt><big>(</big><em>w_name=None</em><big>)</big><a class="reference internal" href="_modules/commons/utils.html#get_tmp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.get_tmp_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a full path to a temp file name, using the current system properties
+if filename is None then a random name is created</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="commons.utils.json_load">
+<tt class="descclassname">commons.utils.</tt><tt class="descname">json_load</tt><big>(</big><em>w_file_name</em><big>)</big><a class="reference internal" href="_modules/commons/utils.html#json_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.json_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<span id="document-dumpimport"></span><div class="section" id="lib-commons-dumpimport-module-documentation">
+<h2>lib.commons.dumpimport module documentation<a class="headerlink" href="#lib-commons-dumpimport-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The lib.commons.dumpimport module enables importing generic CSV files into memory or file-based sqlite3 databases.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="section" id="module-commons.dumpimport.sql3load">
+<span id="sql3load"></span><h3>sql3load<a class="headerlink" href="#module-commons.dumpimport.sql3load" title="Permalink to this headline">¶</a></h3>
+<p>Created on Sep 18, 2013</p>
+<p>&#64;author: marcelo</p>
+<dl class="class">
+<dt id="commons.dumpimport.sql3load.Sql3Load">
+<em class="property">class </em><tt class="descclassname">commons.dumpimport.sql3load.</tt><tt class="descname">Sql3Load</tt><big>(</big><em>w_record_tpl</em>, <em>w_file_name=None</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class implements a generic delimited text file importer into an sqlite3 backend. Allows for limited, SQL-like querying.</p>
+<dl class="method">
+<dt id="commons.dumpimport.sql3load.Sql3Load.getStats">
+<tt class="descname">getStats</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.getStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.getStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with all collected statistics</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="commons.dumpimport.sql3load.Sql3Load.get_rowcount">
+<tt class="descname">get_rowcount</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.get_rowcount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.get_rowcount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current number of rows in the in-memory database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="commons.dumpimport.sql3load.Sql3Load.importFile">
+<tt class="descname">importFile</tt><big>(</big><em>w_file_name</em>, <em>w_delimiter='</em>, <em>'</em>, <em>w_callback=&lt;function &lt;lambda&gt; at 0x108dfc410&gt;</em>, <em>w_callback_steps=10</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.importFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.importFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports delimiter-separated file into memory database. If the filename ends in &#8216;.gz&#8217;, importFile() 
+will try to open it using the gzip module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>w_fname</strong> &#8211; file name of the CSV file to import.</li>
+<li><strong>w_delimiter</strong> &#8211; delimiter char, defaults to comma but can be also</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="commons.dumpimport.sql3load.Sql3Load.query">
+<tt class="descname">query</tt><big>(</big><em>w_query</em>, <em>w_parameters={}</em><big>)</big><a class="reference internal" href="_modules/commons/dumpimport/sql3load.html#Sql3Load.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dumpimport.sql3load.Sql3Load.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs an arbitrary SQL query against the in-memory database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>w_query</strong> &#8211; the query itself (what comes after the WHERE SQL keyword) using named parameters for column values, as in:
+&#8216;origin_as=:oas&#8217;</li>
+<li><strong>w_parameters</strong> &#8211; an associative array with parameter values. Must be consistent with the names used for wquery, as in:
+{&#8216;oas&#8217;: &#8216;28000&#8217;}</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<span id="document-delegated"></span><div class="section" id="lib-delegated-module-documentation">
+<h2>lib.delegated module documentation<a class="headerlink" href="#lib-delegated-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The lib.delegated provides a common API for loading and querying the RIR-style
+stat files, those that can be found at the FTP servers of each RIR.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="section" id="module-delegated.api">
+<span id="delegated-api"></span><h3>Delegated API<a class="headerlink" href="#module-delegated.api" title="Permalink to this headline">¶</a></h3>
+<p>Delegated API Class
+(c) <a class="reference external" href="mailto:carlos&#37;&#52;&#48;lacnic&#46;net">carlos<span>&#64;</span>lacnic<span>&#46;</span>net</a></p>
+<dl class="class">
+<dt id="delegated.api.Delegated">
+<em class="property">class </em><tt class="descclassname">delegated.api.</tt><tt class="descname">Delegated</tt><big>(</big><em>w_file</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="delegated.api.Delegated.cnt">
+<tt class="descname">cnt</tt><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.cnt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.file">
+<tt class="descname">file</tt><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.filename">
+<tt class="descname">filename</tt><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.filters">
+<tt class="descname">filters</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="delegated.api.Delegated.raw_query">
+<tt class="descname">raw_query</tt><big>(</big><em>w_sql</em>, <em>w_parameters={}</em><big>)</big><a class="headerlink" href="#delegated.api.Delegated.raw_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>runs a GENERIC sql query returning a db cursor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delegated.api.Delegated.read_delegated">
+<tt class="descname">read_delegated</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.read_delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.read_delegated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the stats file specified in the constructor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.record_lines">
+<tt class="descname">record_lines</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.record_lines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="delegated.api.Delegated.resource_find_exact">
+<tt class="descname">resource_find_exact</tt><big>(</big><em>w_query</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_exact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_exact" title="Permalink to this definition">¶</a></dt>
+<dd><p>looks for exact matches inside the delegated records</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delegated.api.Delegated.resource_find_inside">
+<tt class="descname">resource_find_inside</tt><big>(</big><em>w_resource</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for w_resource inside assignments</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delegated.api.Delegated.resource_query">
+<tt class="descname">resource_query</tt><big>(</big><em>query</em>, <em>parameters</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>runs a select query returning a db cursor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.summary_lines">
+<tt class="descname">summary_lines</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.summary_lines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="delegated.api.Delegated.version_line">
+<tt class="descname">version_line</tt><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.version_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<span id="document-rpki"></span><div class="section" id="lib-rpki-ripeval-stats-module-documentation">
+<h2>lib.rpki.ripeval_stats module documentation<a class="headerlink" href="#lib-rpki-ripeval-stats-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>lib.rpki.ripeval_stats</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="section" id="module-rpki.ripeval_stats">
+<span id="ripeval-stats"></span><h3>RIPEVal Stats<a class="headerlink" href="#module-rpki.ripeval_stats" title="Permalink to this headline">¶</a></h3>
+<p>Created on Sep 3, 2013</p>
+<p>&#64;author: marcelo</p>
+<dl class="class">
+<dt id="rpki.ripeval_stats.BatchValidationResults">
+<em class="property">class </em><tt class="descclassname">rpki.ripeval_stats.</tt><tt class="descname">BatchValidationResults</tt><a class="reference internal" href="_modules/rpki/ripeval_stats.html#BatchValidationResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rpki.ripeval_stats.BatchValidationResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a RIPE Validator dump into a sqlite memory database. Allows generic SQL-like querying.</p>
+<p>In-memory database columns are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>uri</li>
+<li>origin_as</li>
+<li>prefix</li>
+<li>max_len</li>
+<li>valid_from, valid_until</li>
+<li>istart</li>
+<li>iend</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body"><a class="reference external" href="mailto:carlos&#37;&#52;&#48;lacnic&#46;net">carlos<span>&#64;</span>lacnic<span>&#46;</span>net</a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rpki.ripeval_stats.BatchValidationResults.query">
+<tt class="descname">query</tt><big>(</big><em>w_query</em>, <em>w_parameters</em><big>)</big><a class="reference internal" href="_modules/rpki/ripeval_stats.html#BatchValidationResults.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rpki.ripeval_stats.BatchValidationResults.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs an arbitrary SQL query against the in-memory database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>w_query</strong> &#8211; the query itself (what comes after the WHERE SQL keyword) using named parameters for column values, as in:
+&#8216;origin_as=:oas&#8217;</li>
+<li><strong>w_parameters</strong> &#8211; an associative array with parameter values. Must be consistent with the names used for wquery, as in:
+{&#8216;oas&#8217;: &#8216;28000&#8217;}</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rpki.ripeval_stats.BatchValidationResults.read_csv">
+<tt class="descname">read_csv</tt><big>(</big><em>w_fname</em><big>)</big><a class="reference internal" href="_modules/rpki/ripeval_stats.html#BatchValidationResults.read_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rpki.ripeval_stats.BatchValidationResults.read_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load ROA data from RIPE batch validator CSV output.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>w_fname</strong> &#8211; file name of the CSV file to import.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rpki.ripeval_stats.BatchValidationResults.stats">
+<tt class="descname">stats</tt><big>(</big><em>w_stat_name</em><big>)</big><a class="reference internal" href="_modules/rpki/ripeval_stats.html#BatchValidationResults.stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rpki.ripeval_stats.BatchValidationResults.stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of one of several collected stats during CSV import. 
+Returns None if w_stat_name does not exist.</p>
+<p>Currently defined stat values are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>faled_inserts: how many INSERT statements failed during import</li>
+<li>prefixes: how many prefixes were succesfully inserted into the in-memory database</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>w_stat_name</strong> &#8211; named stat value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html#document-index">Table Of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-commons">lib.commons module documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-commons.getfile">getfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-commons.dprint">dprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-commons.utils">utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-dumpimport">lib.commons.dumpimport module documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-commons.dumpimport.sql3load">sql3load</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-delegated">lib.delegated module documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-delegated.api">Delegated API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-rpki">lib.rpki.ripeval_stats module documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-rpki.ripeval_stats">RIPEVal Stats</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="index.html#document-index">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Carlos Martinez.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>
