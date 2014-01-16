@@ -53,7 +53,10 @@ class DelegatedShell(cmd.Cmd):
         return True
     #
     def do_echo(self, line):
-        print "entered line was %s" % (line)
+        """
+        Echo command, useful for inserting comments into output
+        """
+        print "%s" % (line)
         
     #
     def emptyline(self):
@@ -69,14 +72,15 @@ class DelegatedShell(cmd.Cmd):
         sql = "select %s" % (line)
         rx = self.dlgapi.raw_query(sql, {'tblname': 'resources'})
         c = 0
-        try:
-            if self.env.get('output','') == 'csv':
-                values = dict(rx.fetchone()).keys()
-                values = [str(x) for x in values]
-                print "|".join(values)
-            
+        try:            
             for row in rx:
                 if self.env.get('output','') == 'csv':
+                    if c==0:
+                        # print header
+                        keys = dict(row).keys()
+                        keys = [str(x) for x in keys]
+                        print "|".join(keys)
+                        
                     values = dict(row).values()
                     values = [str(x) for x in values]
                     print "|".join(values)
@@ -91,7 +95,9 @@ class DelegatedShell(cmd.Cmd):
     # 
     def do_set(self, line):
         """
-        Set operational parameters. Syntax is set var=value
+        Set operational parameters. Syntax is set var=value.
+        Currently defined variables:
+        - output = csv -- produces CSV output suitable for spreadsheets 
         """
         try:
             (var, value) = line.split("=")
