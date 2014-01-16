@@ -1,0 +1,10 @@
+set output=csv
+echo ASIGNACIONES IPV6 POR PAIS EN 2013 (Y EQUIVALENTES EN /32s)
+echo ===========================================================
+
+select cc,count(cc),sum(equiv) from resources where type='ipv6' and date like '2013%' group by cc
+
+echo ASIGNACIONES IPV6 POR PAIS TOTALES (Y EQUIVALENTES EN /32s)
+echo ===========================================================
+
+select cc,count(cc),sum(equiv) from resources where type='ipv6' group by cc
