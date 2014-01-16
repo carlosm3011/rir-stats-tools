@@ -34,6 +34,7 @@ class DelegatedShell(cmd.Cmd):
     intro = "Welcome to the Delegated-Stats shell. Type ? for help."
     prompt = "(dlg-lacnic: latest)"
     rir = 'lacnic'
+    env = dict()
     
     def __init__(self):
         #self.dlgapi = w_dlg_api
@@ -43,6 +44,9 @@ class DelegatedShell(cmd.Cmd):
     
     def do_info(self, line):
         print "Hello! This is the delegated-shell version %s" % (program_version)
+        print ""
+        print "Table name is 'resources'"
+        print "Column names are: %s" % ('TBC')
         print "(c) carlos@lacnic.net, released %s" % (release_date)
     #
     def do_EOF(self, line):
@@ -57,15 +61,47 @@ class DelegatedShell(cmd.Cmd):
     
     #
     def do_select(self, line):
+        """
+        Perform a query against the in-memory sqlite3 database. The table name to be used is 'resources'.
+        The syntax is as follows:
+             select * from resources where <where clause>
+        """
         sql = "select %s" % (line)
         rx = self.dlgapi.raw_query(sql, {'tblname': 'resources'})
         c = 0
         try:
+            if self.env.get('output','') == 'csv':
+                values = dict(rx.fetchone()).keys()
+                values = [str(x) for x in values]
+                print "|".join(values)
+            
             for row in rx:
-                print "R%s: %s" % (c, dict(row) )
+                if self.env.get('output','') == 'csv':
+                    values = dict(row).values()
+                    values = [str(x) for x in values]
+                    print "|".join(values)
+                else:
+                    print "R%s: %s" % (c, dict(row) )
                 c = c + 1
         except:
+            # raise
+            # print 
             print "Error - cmd was: %s " % (sql)
+            
+    # 
+    def do_set(self, line):
+        """
+        Set operational parameters. Syntax is set var=value
+        """
+        try:
+            (var, value) = line.split("=")
+            self.env[var] = value
+            print "%s = %s" % (var, value)
+        except:
+            raise
+            print "Error - cmd was set %s" % (line)
+        
+    # end
             
     #
     def do_load(self, line):
@@ -75,7 +111,7 @@ class DelegatedShell(cmd.Cmd):
         # get delegated
         ddate = line
         dp.log("Downloading stat file for RIR %s, date %s..." % (self.rir, ddate))
-        dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-%s-%s" % (self.rir, ddate))
+        dlg_tmpfile = commons.utils.get_tmp_file_name("delegated-extended-%s-%s" % (self.rir, ddate))
         dlg_tmpfile = commons.getfile.getfile( etc.rirconfig.rir_config_data[rir]['dlge'][0] % (ddate), dlg_tmpfile, 43200)
         dp.log(" OK\n")
         
@@ -102,7 +138,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument("-d", "--date", dest="date", help="Date or latest. [default: %(default)s]", metavar="DATE", default='latest' )
     parser.add_argument("-e", "--extra", dest="extra", help="Extra arguments to be passed to the DlgQuery instance. [default: %(default)s]", metavar="DATE", default=None )
-    parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RIR" )
+    parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RIR", default='lacnic' )
     # parser.add_argument("-q", "--file-query", dest="filequery", help="Python-like query to be read from file and run via eval(). [default: %(default)s]", metavar="QUERY" )
     parser.add_argument('-V', '--version', action='version', version=program_version_message)
     parser.add_argument(dest="query", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="query", nargs='?')  

@@ -65,7 +65,7 @@ class Delegated:
             self.conn.row_factory = sqlite3.Row
             self.cursor = self.conn.cursor()
             self.cursor.execute(''' CREATE TABLE resources (registry text, cc text, type text, start text, value text, ''' + 
-                                ''' date text, status text, prefix text, istart unsigned big int, iend unsigned big int) ''')
+                                ''' date text, status text, prefix text, istart unsigned big int, iend unsigned big int, equiv int) ''')
             self.conn.commit()
         except:
             raise
@@ -134,19 +134,22 @@ class Delegated:
                     record['prefix'] = str(pfx)
                     record['istart'] = int(pfx.network)
                     record['iend'] = int(pfx.broadcast)
+                    record['equiv'] = (record['iend']-record['istart'])/256
                 elif record['type'] == 'ipv6':
                     pfx_norm_base = pow(2,64)
                     pfx = ipaddr.IPv6Network( record['start'] + "/" + record['value'] )
                     record['prefix'] = str(pfx)
                     record['istart'] = int(pfx.network) / pfx_norm_base
-                    record['iend'] = int(pfx.broadcast) / pfx_norm_base                    
+                    record['iend'] = int(pfx.broadcast) / pfx_norm_base
+                    record['equiv'] = (record['iend'] - record['istart'] + 1) / pow(2,32)                     
                 else:
                     record['prefix'] = 'na/asn'
                     record['istart'] = int(record['start'])
                     record['iend'] = int(record['start']) + int(record['value'])
+                    record['equiv'] = 'na'
                 #
                 self.cursor.execute("INSERT INTO resources VALUES (:registry, :cc, :type, :start, :value, :date, :status, " + 
-                                    " :prefix, :istart, :iend)", record)
+                                    " :prefix, :istart, :iend, :equiv)", record)
                 #
                 row = csv_r.next()
             except ValueError:
