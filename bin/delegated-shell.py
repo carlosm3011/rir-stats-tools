@@ -32,8 +32,8 @@ program_version_message = "Version %s, released %s, changed %s" % (program_versi
 class DelegatedShell(cmd.Cmd):
     
     intro = "Welcome to the Delegated-Stats shell. Type ? for help."
-    prompt = "(dlg-lacnic: latest)"
     rir = 'lacnic'
+    prompt = "(dlg-%s: latest)" % (rir)
     env = dict()
     
     def __init__(self):
