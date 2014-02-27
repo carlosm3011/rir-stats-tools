@@ -32,13 +32,15 @@ program_version_message = "Version %s, released %s, changed %s" % (program_versi
 class DelegatedShell(cmd.Cmd):
     
     intro = "Welcome to the Delegated-Stats shell. Type ? for help."
-    rir = 'lacnic'
-    prompt = "(dlg-%s: latest)" % (rir)
+    # rir = 'lacnic'
+    # prompt = "(dlg-%s: latest)" % (rir)
     env = dict()
     
-    def __init__(self):
+    def __init__(self, w_rir='lacnic'):
         #self.dlgapi = w_dlg_api
         #super(DelegatedShell, self).__init__()
+	self.rir = w_rir
+    	self.prompt = "(dlg-%s: latest)" % (self.rir)
         self.do_load('latest')
         cmd.Cmd.__init__(self)
     
@@ -153,5 +155,5 @@ if __name__ == "__main__":
     rir = args.rir      
     
     # start shell
-    cli = DelegatedShell()
+    cli = DelegatedShell(rir)
     cli.cmdloop()
