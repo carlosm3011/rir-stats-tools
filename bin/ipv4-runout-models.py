@@ -8,8 +8,8 @@ from datetime import timedelta
 from time import sleep
 import sys
 import csv
-time_horizon = 200
-model_degrees = [2,4,6]
+time_horizon = 250
+model_degrees = [2,3,4,5]
 reserve_pool_size = pow(2,32-10)
 base_date = date(2011,7,22)
 
@@ -24,11 +24,12 @@ print "done!"
 
 # load into numpy arrays
 # --<may not be neccesary-->
-with open('ipv4-remaining.csv') as csvfile:
-	r = csv.reader(csvfile)
+with open('tmp/reports_freespace.txt') as csvfile:
+	r = csv.reader(csvfile, delimiter='|')
 	c = 0
 	for row in r:
-		time_series = append(time_series,float(row[0]))
+		#p_time_series = row[3]
+		time_series = append(time_series, float(row[0]))
 		freeipv4_series = append(freeipv4_series,float(row[1]))
 		c = c + 1
 
@@ -60,7 +61,7 @@ for md in model_degrees:
 
 	print " "
 	# print "Polynomial degree is %s" % (md)
-	if t < base_t + time_horizon:
+	if t < base_t + time_horizon - 1:
 	    print "Delta T for IPv4 runout is %s" % (t-base_t)
 	    p1_date = base_date + timedelta(t)
 	    print "Expected phase 1 entry date %s" % (p1_date)
