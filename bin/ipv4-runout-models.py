@@ -6,24 +6,22 @@ from numpy import *
 from datetime import date 
 from datetime import timedelta
 from time import sleep
+from commons import getfile
 import sys
 import csv
-time_horizon = 250
-model_degrees = [2,3,4,5]
+time_horizon = 500
+model_degrees = [2,3,4]
 reserve_pool_size = pow(2,32-10)
 base_date = date(2011,7,22)
 
 # fetch data
 print "Fetching IPv4 allocation data... ",
-#time_series = array([1,2,3,4,5,6,7,8,9,10])
 time_series = array([])
-#freeipv4_series = array([1000,900,850,820,750,720,730,700,650,640])
 freeipv4_series = array([])
+getfile.getfile("http://www.labs.lacnic.net/reports_freespace.txt", "tmp/reports_freespace.txt")
 print "done!"
 
 
-# load into numpy arrays
-# --<may not be neccesary-->
 with open('tmp/reports_freespace.txt') as csvfile:
 	r = csv.reader(csvfile, delimiter='|')
 	c = 0
@@ -41,6 +39,7 @@ print "%s entries loaded." % (c)
 # run models
 print "Now running different models:"
 print "-- "
+runout_offsets = []
 
 for md in model_degrees:
 	model_poly = polyfit(time_series, freeipv4_series, md)
@@ -56,19 +55,43 @@ for md in model_degrees:
 	    if freeipv4_estimated < reserve_pool_size:
 	        break
 	    print '\r',
-	    sleep(0.01)
+	    sleep(0.005)
 	    sys.stdout.flush()
 
 	print " "
 	# print "Polynomial degree is %s" % (md)
 	if t < base_t + time_horizon - 1:
 	    print "Delta T for IPv4 runout is %s" % (t-base_t)
+	    runout_offsets.append(t)
 	    p1_date = base_date + timedelta(t)
 	    print "Expected phase 1 entry date %s" % (p1_date)
 	else:
 	    print "Delta T could not be identified, check for numeric instability"
 
-# end for
+# compute a collated date, averaging previous models
+avg_offset = mean(runout_offsets)
+stddev_offset = std(runout_offsets)
+p1_date_avg = base_date + timedelta(avg_offset)
+
+print " "
+print " -- "
+print "Averaged date offset: %s" % (avg_offset)
+print "StdDev   date offset: %s" % (stddev_offset)
+print "Averaged runout date: %s" % (p1_date_avg)
+
+#
+
+print " "
+print "Writing HTML widget...",
+fo = open ("tmp/lacnic-ipv4runout-widget.html", "w")
+fo.write("<div class='l4runout'>\n")
+fo.write("<div id='l4hdr'>LACNIC IPv4 Exhaustion Model</div>\n")
+fo.write("<div id='l4addr'>%s</div>\n" % (freeipv4_series[-1])) 
+fo.write("<div id='l4date'>%s</div>\n" % ( p1_date_avg ) )
+fo.write("</div>\n")
+fo.close()
+print "done!"
+
 
 
 ##################################################################

@@ -134,7 +134,7 @@ class Delegated:
                     record['prefix'] = str(pfx)
                     record['istart'] = int(pfx.network)
                     record['iend'] = int(pfx.broadcast)
-                    record['equiv'] = (record['iend']-record['istart'])/256
+                    record['equiv'] = (record['iend']-record['istart'])/256 + 1
                 elif record['type'] == 'ipv6':
                     pfx_norm_base = pow(2,64)
                     pfx = ipaddr.IPv6Network( record['start'] + "/" + record['value'] )
