@@ -80,18 +80,33 @@ print "StdDev   date offset: %s" % (stddev_offset)
 print "Averaged runout date: %s" % (p1_date_avg)
 
 #
-
 print " "
 print "Writing HTML widget...",
 fo = open ("tmp/lacnic-ipv4runout-widget.html", "w")
+fo.write("<html>\n")
+fo.write("<head>\n")
+fo.write('<link href="http://www2.lacnic.net/lacnic/depletion.css" rel="stylesheet" type="text/css">')
+fo.write("</head>\n")
+fo.write("<body>\n")
 fo.write("<div class='l4runout'>\n")
 fo.write("<div id='l4hdr'>LACNIC IPv4 Exhaustion Model</div>\n")
 fo.write("<div id='l4addr'>%s</div>\n" % (freeipv4_series[-1])) 
+fo.write("<div id='l4dash8'>%.2f</div>\n" % ( float(freeipv4_series[-1]) / pow(2,24) ) ) 
 fo.write("<div id='l4date'>%s</div>\n" % ( p1_date_avg ) )
 fo.write("</div>\n")
+fo.write("</body>\n")
+fo.write("</html>\n")
 fo.close()
 print "done!"
 
-
+print "Writing log information....",
+fo = open ("tmp/lacnic-ipv4runout-log.txt", "w+")
+#log_line = "%s|%s|%s|%s" % ("date", "free_ips", "runout_date", "std_dev")
+today = date.today()
+today_fmt = today.strftime("%Y%m%d")
+log_line = "%s|%s|%s|%s" % (today_fmt, freeipv4_series[-1], p1_date_avg, stddev_offset)
+fo.write("%s\n" % (log_line))
+fo.close()
+print "done!"
 
 ##################################################################
