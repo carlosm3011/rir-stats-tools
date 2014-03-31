@@ -6,6 +6,6 @@ PYTHON="/usr/bin/python"
 export SRCHOME=$(pwd)
 
 ####
-export PYTHONPATH="$SRCHOME/lib:$SRCHOME/lib:$PYTHONPATH"
+export PYTHONPATH="$SRCHOME/lib:$SRCHOME/bin:$PYTHONPATH"
 
 $PYTHON $*
