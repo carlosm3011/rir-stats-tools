@@ -4,6 +4,8 @@
 #
 # this version uses different exhaustion data
 ##################################################################
+from matplotlib import use
+use('Agg')
 from numpy import *
 from datetime import date 
 from datetime import timedelta
@@ -13,6 +15,9 @@ import sys
 import csv
 import json
 from matplotlib import pyplot
+
+
+# avoid tkinter, allow headless plots
 
 time_horizon = 200
 lastdays = 60
