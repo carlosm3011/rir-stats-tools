@@ -12,10 +12,11 @@ from commons import getfile
 import sys
 import csv
 import json
+from matplotlib import pyplot
 
-time_horizon = 500
-lastdays = 45
-model_degrees = [1,2,3,4]
+time_horizon = 200
+lastdays = 60
+model_degrees = [1,2,3]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
@@ -25,6 +26,8 @@ print "Fetching IPv4 allocation data... ",
 sys.stdout.flush()
 time_series = array([])
 freeipv4_series = array([])
+time_series_pred = []
+freeipv4_series_pred = []
 
 getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 20)
 print "done!"
@@ -65,9 +68,16 @@ for md in model_degrees:
     # print out expected runout dates
     # find the next zero-crossing
     base_t = int(amax(time_series))
-    time_series_future = xrange(base_t, base_t + time_horizon)
+    # time_series_future = xrange(base_t, base_t + time_horizon)
+    time_series_future = xrange(0, base_t + time_horizon)
+    #
+    time_series_pred.append(array([]))
+    freeipv4_series_pred.append(array([]))
+    #
     for t in time_series_future:
         freeipv4_estimated = polyval(model_poly, t)
+        freeipv4_series_pred[-1] = append(freeipv4_series_pred[-1], freeipv4_estimated)
+        time_series_pred[-1] = append(time_series_pred[-1], t)
         print "t: %s, free_ipv4: %s" % (t, freeipv4_estimated),
         if freeipv4_estimated < reserve_pool_size:
             break
@@ -104,6 +114,7 @@ last_freeipv4 = freeipv4_series[0]
 
 print " "
 print "Writing HTML widget...",
+sys.stdout.flush()
 fo = open ("tmp/lacnic-ipv4runout-widget.html", "w")
 fo.write("<html>\n")
 fo.write("<head>\n")
@@ -121,7 +132,25 @@ fo.write("</html>\n")
 fo.close()
 print "done!"
 
+print "Writing plot...",
+sys.stdout.flush()
+po = pyplot.plot(time_series, freeipv4_series, linewidth=2)
+for x in xrange(0, len(time_series_pred)):
+    po = pyplot.plot(time_series_pred[x], freeipv4_series_pred[x], 'r-')
+#
+loc = range(15, max(runout_offsets)+15, 30)
+pyplot.xticks(loc, [base_date + timedelta(x) for x in loc])
+#
+loc, yl = pyplot.yticks()
+pyplot.yticks(loc, [ "%.2f" % (float(y)/pow(2,32-8)) for y in loc])
+po = pyplot.axhline(y=reserve_pool_size, linewidth=1, color='g')
+pyplot.ylabel("Direcciones IPv4 libres")
+pyplot.xlabel("Tiempo")
+pyplot.savefig("tmp/lacnic-ipv4runout-plot.png", dpi=120)
+print "done!"
+
 print "Writing log information....",
+sys.stdout.flush()
 fo = open ("tmp/lacnic-ipv4runout-log.txt", "a+")
 #log_line = "%s|%s|%s|%s" % ("date", "free_ips", "runout_date", "std_dev")
 today = date.today()
