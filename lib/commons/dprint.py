@@ -33,6 +33,13 @@ import os
 import sys
 
 ##############################################################################
+def setAutoFlush():
+    # reopen stdout file descriptor with write mode
+    # and 0 as the buffer size (unbuffered)
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+##############################################################################
+
+##############################################################################
 class dprint:
     def __init__(self, w_sys_loglevel = 3):
         '''

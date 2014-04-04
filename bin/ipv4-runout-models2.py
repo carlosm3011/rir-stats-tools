@@ -6,25 +6,34 @@
 ##################################################################
 from matplotlib import use
 use('Agg')
+from matplotlib import pyplot
+#
 from numpy import *
 from datetime import date 
 from datetime import timedelta
 from time import sleep
 from commons import getfile
 import sys
-import csv
+#import csv
 import json
-from matplotlib import pyplot
+import commons.dprint
+commons.dprint.setAutoFlush()
 
 
 # avoid tkinter, allow headless plots
 
+dash8 = pow(2,24)
 time_horizon = 200
 lastdays = 60
 model_degrees = [1,2,3]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
+
+#
+print "IPv4 RUNDOWN MODELS (c) Carlos M. Martinez, carlos@lacnic.net"
+print "--"
+print " "
 
 # fetch data
 print "Fetching IPv4 allocation data... ",
@@ -34,7 +43,7 @@ freeipv4_series = array([])
 time_series_pred = []
 freeipv4_series_pred = []
 
-getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 20)
+getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 60)
 print "done!"
 
 print "Parsing JSON data...",
@@ -47,15 +56,6 @@ for row in jsd_data['rows']:
     freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']))
     cnt = cnt + 1
 print "done!"
-
-# with open('tmp/reports_freespace.txt') as csvfile:
-# 	r = csv.reader(csvfile, delimiter='|')
-# 	c = 0
-# 	for row in r:
-# 		#p_time_series = row[3]
-# 		time_series = append(time_series, float(row[0]))
-# 		freeipv4_series = append(freeipv4_series,float(row[1]))
-# 		c = c + 1
 
 print "%s entries loaded." % (cnt)
 
@@ -88,7 +88,6 @@ for md in model_degrees:
             break
         print '\r',
         sleep(0.005)
-        sys.stdout.flush()
 
     print " "
     # print "Polynomial degree is %s" % (md)
@@ -119,7 +118,7 @@ last_freeipv4 = freeipv4_series[0]
 
 print " "
 print "Writing HTML widget...",
-sys.stdout.flush()
+#
 fo = open ("tmp/lacnic-ipv4runout-widget.html", "w")
 fo.write("<html>\n")
 fo.write("<head>\n")
@@ -129,7 +128,7 @@ fo.write("<body>\n")
 fo.write("<div class='l4runout'>\n")
 fo.write("<div id='l4hdr'>LACNIC IPv4 Exhaustion Model</div>\n")
 fo.write("<div id='l4addr'>%s</div>\n" % (last_freeipv4) )
-fo.write("<div id='l4dash8'>%.2f</div>\n" % ( float(last_freeipv4) / pow(2,24) )  )
+fo.write("<div id='l4dash8'>%.2f</div>\n" % ( float(last_freeipv4) / dash8 )  )
 fo.write("<div id='l4date'>%s</div>\n" % ( p1_date_avg ) )
 fo.write("</div>\n")
 fo.write("</body>\n")
@@ -137,23 +136,29 @@ fo.write("</html>\n")
 fo.close()
 print "done!"
 
+
+### PLOT #########################################################################
 print "Writing plot...",
-sys.stdout.flush()
 po = pyplot.plot(time_series, freeipv4_series, linewidth=2)
 for x in xrange(0, len(time_series_pred)):
     po = pyplot.plot(time_series_pred[x], freeipv4_series_pred[x], 'r-')
 #
-loc = range(15, max(runout_offsets)+15, 30)
-pyplot.xticks(loc, [base_date + timedelta(x) for x in loc])
+locx = range(15, max(runout_offsets)+15, 30)
+pyplot.xticks(locx, [base_date + timedelta(x) for x in locx])
 #
-loc, yl = pyplot.yticks()
-pyplot.yticks(loc, [ "%.2f" % (float(y)/pow(2,32-8)) for y in loc])
-po = pyplot.axhline(y=reserve_pool_size, linewidth=1, color='g')
+locy, yl = pyplot.yticks()
+pyplot.yticks(locy, [ "%.2f" % (float(y)/pow(2,32-8)) for y in locy])
+po = pyplot.axhline(y=reserve_pool_size, linewidth=2, color='g', label="/10 Reserve")
+pyplot.annotate("/10 Reserve", (40,reserve_pool_size+100000))
+pyplot.vlines(locx,0,1.49*dash8,linestyles='dotted')
+pyplot.hlines(locy, 0, 135, linestyles='dotted')
 pyplot.ylabel("Direcciones IPv4 libres")
 pyplot.xlabel("Tiempo")
 pyplot.savefig("tmp/lacnic-ipv4runout-plot.png", dpi=120)
 print "done!"
+##################################################################################
 
+### LOG ##########################################################################
 print "Writing log information....",
 sys.stdout.flush()
 fo = open ("tmp/lacnic-ipv4runout-log.txt", "a+")
@@ -164,5 +169,6 @@ log_line = "%s|%s|%s|%s" % (today_fmt, last_freeipv4, p1_date_avg, stddev_offset
 fo.write("%s\n" % (log_line))
 fo.close()
 print "done!"
+##################################################################################
 
 ##################################################################
