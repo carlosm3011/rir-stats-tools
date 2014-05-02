@@ -23,9 +23,9 @@ commons.dprint.setAutoFlush()
 # avoid tkinter, allow headless plots
 
 dash8 = pow(2,24)
-time_horizon = 200
-lastdays = 60
-model_degrees = [1,2,3]
+time_horizon = 290
+lastdays = 90
+model_degrees = [1,2]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
