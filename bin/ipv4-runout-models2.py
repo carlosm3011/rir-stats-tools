@@ -23,9 +23,9 @@ commons.dprint.setAutoFlush()
 # avoid tkinter, allow headless plots
 
 dash8 = pow(2,24)
-time_horizon = 290
-lastdays = 90
-model_degrees = [1,2]
+time_horizon = 120
+lastdays = 45
+model_degrees = [1,2,3,4]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
@@ -43,7 +43,7 @@ freeipv4_series = array([])
 time_series_pred = []
 freeipv4_series_pred = []
 
-getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 3600)
+getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 30)
 print "done!"
 
 print "Parsing JSON data...",
@@ -65,6 +65,7 @@ print "%s entries loaded." % (cnt)
 print "Now running different models:"
 print "-- "
 runout_offsets = []
+dash9_offsets = []
 
 for md in model_degrees:
     model_poly = polyfit(time_series, freeipv4_series, md)
@@ -79,11 +80,14 @@ for md in model_degrees:
     time_series_pred.append(array([]))
     freeipv4_series_pred.append(array([]))
     #
+    dash9_offset = -1
     for t in time_series_future:
         freeipv4_estimated = polyval(model_poly, t)
         freeipv4_series_pred[-1] = append(freeipv4_series_pred[-1], freeipv4_estimated)
         time_series_pred[-1] = append(time_series_pred[-1], t)
         print "t: %s, free_ipv4: %s" % (t, freeipv4_estimated),
+        if freeipv4_estimated < 0.5*float(dash8) and dash9_offset == -1:
+            dash9_offset = t-base_t
         if freeipv4_estimated < reserve_pool_size:
             break
         print '\r',
@@ -92,8 +96,10 @@ for md in model_degrees:
     print " "
     # print "Polynomial degree is %s" % (md)
     if t < base_t + time_horizon - 1:
+        print "Delta T for dash9 global policy trigger is %s" % (dash9_offset)
         print "Delta T for IPv4 runout is %s" % (t-base_t)
         runout_offsets.append(t)
+        dash9_offsets.append(dash9_offset)
         p1_date = base_date + timedelta(t)
         print "Expected phase 1 entry date %s" % (p1_date)
     else:
@@ -129,7 +135,7 @@ fo.write("</head>\n")
 fo.write("<body>\n")
 fo.write("<div class='l4runout'>\n")
 fo.write("<div id='l4hdr'>LACNIC IPv4 Exhaustion Model</div>\n")
-fo.write("<div id='l4addr'>%s</div>\n" % (last_freeipv4) )
+fo.write("<div id='l4addr'>%s</div>\n" % ( int(last_freeipv4) ) )
 fo.write("<div id='l4dash8'>%.2f</div>\n" % ( float(last_freeipv4) / dash8 )  )
 fo.write("<div id='l4date'>%s</div>\n" % ( p1_date_avg ) )
 fo.write("<div id='l4avalloc'>%.2f</div>\n" % ( last_freeipv4 - reserve_pool_size ) )
