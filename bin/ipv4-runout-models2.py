@@ -23,8 +23,8 @@ commons.dprint.setAutoFlush()
 # avoid tkinter, allow headless plots
 
 dash8 = pow(2,24)
-time_horizon = 120
-lastdays = 45
+time_horizon = 180
+lastdays = 30
 model_degrees = [1,2,3,4]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
