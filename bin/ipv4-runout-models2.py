@@ -24,8 +24,8 @@ commons.dprint.setAutoFlush()
 
 dash8 = pow(2,24)
 time_horizon = 200
-lastdays = 60
-model_degrees = [1,2,3]
+lastdays = 75
+model_degrees = [1,2]
 reserve_pool_size = pow(2,32-10)
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
