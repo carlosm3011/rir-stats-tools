@@ -26,6 +26,7 @@ dash8 = pow(2,24)
 time_horizon = 180
 lastdays = 30
 date_dash9_reached = date(2014,5,20)
+date_debogon_start = date(2014,5,23)
 model_degrees = [1,2,3,4]
 reserve_pool_size = pow(2,32-10) 
 base_date = date.today() - timedelta(lastdays)
@@ -44,7 +45,7 @@ freeipv4_series = array([])
 time_series_pred = []
 freeipv4_series_pred = []
 
-getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 300)
+getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 1800)
 print "done!"
 
 print "Parsing JSON data...",
@@ -54,12 +55,16 @@ jsd_file.close()
 cnt = 0
 for row in jsd_data['rows']:
     time_series     = append(time_series, float(lastdays-cnt))
-    if base_date+timedelta(lastdays-cnt) <= date_dash9_reached:
-	print "0: %s, %s" % (lastdays-cnt, float(row['c'][1]['v'])  )
-    	freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']))
-    else:
-	print "1: %s, %s" % (lastdays-cnt, float(row['c'][1]['v']) - dash8/8 )
-    	freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']) - dash8/8)
+    ref_date = base_date+timedelta(lastdays-cnt)
+    if  ref_date <= date_dash9_reached:
+        print "0: %s, %s" % (lastdays-cnt, float(row['c'][1]['v'])  )
+        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']))
+    elif ref_date < date_debogon_start:
+        print "1: %s, %s" % (lastdays-cnt, float(row['c'][1]['v']) - dash8/8 )
+        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']) - dash8/8)        
+    elif ref_date >= date_debogon_start: 
+        print "2: %s, %s" % (lastdays-cnt, float(row['c'][1]['v'])  )
+        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']) )
     cnt = cnt + 1
 print "done!"
 
