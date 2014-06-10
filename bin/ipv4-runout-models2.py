@@ -24,10 +24,10 @@ commons.dprint.setAutoFlush()
 
 dash8 = pow(2,24)
 time_horizon = 180
-lastdays = 30
+lastdays = 90
 date_dash9_reached = date(2014,5,20)
 date_debogon_start = date(2014,5,23)
-model_degrees = [1,2,3,4]
+model_degrees = [1,3]
 reserve_pool_size = pow(2,32-10) 
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
@@ -45,7 +45,7 @@ freeipv4_series = array([])
 time_series_pred = []
 freeipv4_series_pred = []
 
-getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 1800)
+getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), freeipv4_tmpfile, 30)
 print "done!"
 
 print "Parsing JSON data...",
@@ -56,15 +56,16 @@ cnt = 0
 for row in jsd_data['rows']:
     time_series     = append(time_series, float(lastdays-cnt))
     ref_date = base_date+timedelta(lastdays-cnt)
-    if  ref_date <= date_dash9_reached:
-        print "0: %s, %s" % (lastdays-cnt, float(row['c'][1]['v'])  )
-        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']))
+    fip4 = float(row['c'][1]['v']) 
+    if  ref_date <= date_dash9_reached :
+        print "0: %s, %s" % (lastdays-cnt, fip4  )
+        freeipv4_series = append(freeipv4_series, fip4 )
     elif ref_date < date_debogon_start:
-        print "1: %s, %s" % (lastdays-cnt, float(row['c'][1]['v']) - dash8/8 )
-        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']) - dash8/8)        
+        print "1: %s, %s" % (lastdays-cnt, fip4 - dash8/8 )
+        freeipv4_series = append(freeipv4_series, fip4 - dash8/8)        
     elif ref_date >= date_debogon_start: 
-        print "2: %s, %s" % (lastdays-cnt, float(row['c'][1]['v'])  )
-        freeipv4_series = append(freeipv4_series, float(row['c'][1]['v']) )
+        print "2: %s, %s" % (lastdays-cnt, fip4  )
+        freeipv4_series = append(freeipv4_series, fip4 )
     cnt = cnt + 1
 print "done!"
 
@@ -174,8 +175,9 @@ pyplot.annotate("/9 Trigger", (50,reserve_pool_size*2+100000))
 pyplot.annotate("/10 Reserve", (60,reserve_pool_size+100000))
 pyplot.annotate("Generated on: %s" % (date.today()), (70,1.2*dash8))
 pyplot.vlines(locx,0,1.49*dash8,linestyles='dotted')
-pyplot.vlines(avg_offset, 0, 0.75*dash8, linestyles='dotted', color='blue')
-pyplot.annotate("Approx. Runout Date: %s" % (p1_date_avg), (avg_offset-10, 0.78*dash8) )
+#pyplot.vlines(avg_offset, 0, 0.75*dash8, linestyles='dotted', color='blue')
+#pyplot.annotate("Approx. Runout Date: %s" % (p1_date_avg), (avg_offset-10, 0.78*dash8) )
+pyplot.annotate("LACNIC reached its last /10 on 2014-06-10", (avg_offset-40, 0.78*dash8), color='red' )
 pyplot.hlines(locy, 0, 135, linestyles='dotted')
 pyplot.ylabel("Available IPv4 Space (in /8s)")
 pyplot.xlabel("Time")
