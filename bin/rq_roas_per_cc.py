@@ -1,6 +1,7 @@
 #-----------------------------------------------------------
 # RoaQuery class
-#
+# (c) Carlos M. Martinez, carlos@lacnic.net
+# 2013-09-20
 #
 #-----------------------------------------------------------
 
@@ -95,3 +96,6 @@ class RoaQuery():
 		print "Total IPv4 /24s for all CCs: %s" % self.allccs4
 		print "Total IPv6 /32s for all CCs: %s" % self.allccs6
 		#
+
+##-----------------------------------------------
+
