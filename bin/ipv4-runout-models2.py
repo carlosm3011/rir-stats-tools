@@ -24,7 +24,7 @@ commons.dprint.setAutoFlush()
 
 dash8 = pow(2,24)
 time_horizon = 180
-lastdays = 90
+lastdays = 120
 date_dash9_reached = date(2014,5,20)
 date_debogon_start = date(2014,5,23)
 model_degrees = [1,3]
