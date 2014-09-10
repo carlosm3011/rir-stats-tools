@@ -86,7 +86,7 @@ USAGE
     # Setup argument parser
     parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument("-d", "--date", dest="date", help="Date or latest. [default: %(default)s]", metavar="DATE", default='latest' )
-    parser.add_argument("-e", "--extra", dest="extra", help="Extra arguments to be passed to the RoaQuery instance. [default: %(default)s]", metavar="DATE", default=None )
+    parser.add_argument("-e", "--extra", dest="extra", help="Extra arguments to be passed to the RoaQuery instance. [default: %(default)s]", metavar="EXTRA", default=None )
     parser.add_argument("-r", "--rir", dest="rir", help="RIR Name to process. [default: %(default)s]", metavar="RIR" )
     parser.add_argument("-q", "--file-query", dest="filequery", help="Python-like query to be read from file and run via eval(). [default: %(default)s]", metavar="QUERY" )
     parser.add_argument('-V', '--version', action='version', version=program_version_message)

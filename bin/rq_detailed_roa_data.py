@@ -2,6 +2,7 @@
 # RoaQuery class: Detailed ROA Information
 #
 # (c) carlos@lacnic.net
+# 2013-10-10
 #-----------------------------------------------------------
 
 import etc.rirconfig
@@ -38,3 +39,5 @@ class RoaQuery():
 	def finalize(self, extra=None):
 		print "\n"
 		print "ROA count for CC %s: %s" % (self.parameters, self.sk.getKey('roa-count'))
+#--- END RoaQuery -----------------------------------------------------------------------
+
