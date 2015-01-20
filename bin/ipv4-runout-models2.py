@@ -23,11 +23,11 @@ commons.dprint.setAutoFlush()
 # avoid tkinter, allow headless plots
 
 dash8 = pow(2,24)
-time_horizon = 30
-lastdays = 180
+time_horizon = 180
+lastdays = 100
 date_dash9_reached = date(2014,5,20)
 date_debogon_start = date(2014,5,23)
-model_degrees = [1,3]
+model_degrees = [1]
 reserve_pool_size = pow(2,32-10) 
 base_date = date.today() - timedelta(lastdays)
 freeipv4_tmpfile = "tmp/reports_freespace_fromextended.txt"
@@ -169,12 +169,12 @@ pyplot.xticks(locx, [base_date + timedelta(x) for x in locx])
 #
 locy, yl = pyplot.yticks()
 pyplot.yticks(locy, [ "%.2f" % (float(y)/pow(2,32-8)) for y in locy])
-pyplot.axhline(y=reserve_pool_size, linewidth=2, color='g')
-pyplot.axhline(y=reserve_pool_size*2, linewidth=1, color='y')
-pyplot.annotate("/9 Trigger", (50,reserve_pool_size*2+100000))
-pyplot.annotate("/10 Reserve", (60,reserve_pool_size+100000))
-pyplot.annotate("Generated on: %s" % (date.today()), (70,1.2*dash8))
-pyplot.vlines(locx,0,1.49*dash8,linestyles='dotted')
+#pyplot.axhline(y=reserve_pool_size, linewidth=2, color='g')
+#pyplot.axhline(y=reserve_pool_size*2, linewidth=1, color='y')
+#pyplot.annotate("/9 Trigger", (50,reserve_pool_size*2+100000))
+#pyplot.annotate("/10 Reserve", (60,reserve_pool_size+100000))
+pyplot.annotate("Generated on: %s" % (date.today()), (70,0.1*dash8))
+#pyplot.vlines(locx,0,1.49*dash8,linestyles='dotted')
 #pyplot.vlines(avg_offset, 0, 0.75*dash8, linestyles='dotted', color='blue')
 #pyplot.annotate("Approx. Runout Date: %s" % (p1_date_avg), (avg_offset-10, 0.78*dash8) )
 pyplot.annotate("LACNIC reached its last /10 on 2014-06-10", (avg_offset-40, 0.78*dash8), color='red' )
