@@ -2,6 +2,8 @@
 Created on Sep 18, 2013
 
 @author: marcelo
+
+@todo: better automation
 '''
 
 import sqlite3
