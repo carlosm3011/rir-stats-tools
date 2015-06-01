@@ -1,16 +1,33 @@
-rir-stats-tools
-===============
+# RIR-STATS-TOOLS
 
-A set of tools and libraries to process RIR statistics files.
+**Creacion**: 
 
-- RPKI Stats
+**Autores**: Carlos Martinez <carlos @ lacnic.net>
 
-- Delegated 
+## Introduccion 
 
-- ROA Import
+Este proyecto brinda un conjunto de herramientas para procesar datos 
+estadisticos producidos por los diferentes Registros Regionales de Internet, en 
+particular LACNIC.
 
-- Generic CSV Importer
+## Herramientas
 
-- delegated-shell
+### Commons
 
-- IPv4 runout models and grapher
+Libreria python de funciones de apoyo:
+
+* getfile: bajar archivos por HTTP
+* dpring: debugging print
+
+### RPKI Stats
+
+Estadisticas de despliegue de RPKI
+
+### IPv4 Runout Models
+
+Estimaciones de fechas de agotamiento de IPv4
+
+### IPv6 Stats
+
+TBD
+
