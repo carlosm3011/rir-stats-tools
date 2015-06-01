@@ -1,8 +1,11 @@
 # RIR-STATS-TOOLS
 
-**Creacion**: 
+**Creacion**: 2013-08-29 
 
-**Autores**: Carlos Martinez <carlos @ lacnic.net>
+**Autores**: 
+
+- Elisa Peirano <elisa @ lacnic.net>
+- Carlos Martinez <carlos @ lacnic.net>
 
 ## Introduccion 
 
