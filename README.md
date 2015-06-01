@@ -24,7 +24,12 @@ Libreria python de funciones de apoyo:
 
 ### RPKI Stats
 
-Estadisticas de despliegue de RPKI
+Estadisticas de despliegue de RPKI. Algunos ejemplos:
+
+**RPKI por codigo de pais**
+```
+ ./bin/run.sh ./bin/rpki-stats.py -r lacnic -q ./bin/rq_roas_per_cc.py
+```
 
 ### IPv4 Runout Models
 
