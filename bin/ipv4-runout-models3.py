@@ -9,13 +9,21 @@
 from numpy import *
 from datetime import date
 from datetime import timedelta
+from datetime import datetime
 from time import sleep
+from time import mktime
 from commons import getfile
 import sys
 import json
 import commons.dprint
 commons.dprint.setAutoFlush()
 
+def parseMongoDate(stringDate):
+	b=stringDate[5:-1]
+	c=[int(x) for x in b.split(",")]
+	d=datetime(c[0],c[1]+1,c[2],c[3],c[4],c[5])
+	timestamp=mktime(d.timetuple())
+	return timestamp
 
 hoy = date.today()
 print hoy
@@ -32,11 +40,12 @@ ipv4libres_tmp = "tmp/reports_freespace.txt"
 print "Fetching IPv4 allocation data...",
 sys.stdout.flush()
 serie_temporal = array([])
+serie_temporal_corrida = array([])
 serie_ipv4libres = array([])
 serie_temporal_pred = []
 serie_ipv4libres_pred = []
 
-getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays), ipv4libres_tmp, 30)
+getfile.getfile("http://opendata.labs.lacnic.net/ipv4stats/ipv4avail/lacnic?lastdays=%s" % (lastdays-1), ipv4libres_tmp, 30)
 print "done!"
 
 print "Parsing JSON data...",
@@ -44,14 +53,28 @@ jsd_file = open(ipv4libres_tmp, "r")
 datos = json.load(jsd_file)
 jsd_file.close()
 i = 0
-for row in datos['rows']:
-	serie_temporal = append(serie_temporal, float(lastdays-i))
+for row in reversed(datos['rows']):
+	ts=parseMongoDate(row['c'][0]['v'])
+	serie_temporal = append(serie_temporal, ts)
 	fip4 = float(row['c'][1]['v'])
 	serie_ipv4libres = append(serie_ipv4libres, fip4)
 	i = i + 1
 print "done!"
 
+rango = xrange(1, lastdays+1)
+
+for r in rango:
+	fecha_ts2 = fecha_fase2 + timedelta(float(r))
+	ts2 = mktime(fecha_ts2.timetuple())
+	serie_temporal_corrida = append(serie_temporal_corrida, ts2)
+
+print date.fromtimestamp(serie_temporal_corrida[0])
+print date.fromtimestamp(serie_temporal_corrida[-1])
+#print serie_temporal[0]
+
 print "%s entries loaded." % (i)
+
+#print serie_ipv4libres[0]
 		
 print "Corriendo modelos:"
 print "-- "
@@ -60,24 +83,44 @@ dash10_offsets = []
 
 model_poly = polyfit(serie_temporal, serie_ipv4libres, 1)
 print "Polynomial degree %s fitted successfully, result is: %s" % (1, model_poly)
+
 	
 base_t =int(amax(serie_temporal))
-	
-time_series_future = xrange(0, base_t + dias_pred)
+cero = int(amin(serie_temporal))
+
+rango_pred = array([])	
+rango_pred = append(rango_pred, serie_temporal_corrida)
+for j in xrange(0,dias_pred):
+	d = hoy + timedelta(j)
+	ts = mktime(d.timetuple())
+	rango_pred = append(rango_pred, ts)
+
+time_series_future = xrange(0, len(rango_pred))
+print len(rango_pred)
+
+fechas = []
+for f in xrange(0, len(serie_temporal)):
+	fechas.append(date.fromtimestamp(serie_temporal[f]))
 	
 serie_temporal_pred.append(array([]))
 serie_ipv4libres_pred.append(array([]))
-	
+
 dash10_offset = -1
 f = open("tmp/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
 for t in time_series_future:
-	ipv4libres_estimado = polyval(model_poly, t)
+	ipv4libres_estimado = polyval(model_poly, rango_pred[t])
 	serie_ipv4libres_pred[-1] = append(serie_ipv4libres_pred[-1], ipv4libres_estimado)
-	serie_temporal_pred[-1] = append(serie_temporal_pred[-1], t)
-	f.write(str(fecha_fase2 + timedelta(t))+","+str(ipv4libres_estimado)+"\n")
+	serie_temporal_pred[-1] = append(serie_temporal_pred[-1], rango_pred[t])
+	if t < i:
+		if date.fromtimestamp(rango_pred[t]) in fechas:
+			f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+str(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])+","+"2097152\n")
+		else:
+			f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+","+"2097152\n")
+	if t > i-1:
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+","+"2097152\n")
 	print "t: %s, free_ipv4: %s" % (t, ipv4libres_estimado),
 	if ipv4libres_estimado < 0.25*float(dash8) and dash10_offset == -1:
-		dash10_offset =t-base_t
+		dash10_offset =t-lastdays-1
 	if ipv4libres_estimado < pool_reservado:
 		break
 	print '\r',
@@ -86,12 +129,12 @@ for t in time_series_future:
 print " "
 f.close()
 	
-if t < base_t + dias_pred - 1:
+if t < lastdays - 1 + dias_pred - 1:
 	#print "Delta T for dash10 global policy trigger was %s" % (dash10_offset)
-	print "Delta T for dash11 runout is %s" % (t-base_t)
+	print "Delta T for dash11 runout is %s" % (t-lastdays-1)
 	runout_offsets.append(t)
 	dash10_offsets.append(dash10_offset)
-	p3_date = fecha_fase2 + timedelta(t)
+	p3_date = date.fromtimestamp(rango_pred[t])
 	print "Expected phase 3 entry date %s" % (p3_date)
 else:
 	print "Delta T could not be identified, check for numerity instability"
