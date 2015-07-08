@@ -56,10 +56,11 @@ i = 0
 for row in reversed(datos['rows']):
 	ts=parseMongoDate(row['c'][0]['v'])
 	serie_temporal = append(serie_temporal, ts)
-	fip4 = float(row['c'][1]['v'])
+	fip4 = row['c'][1]['v']
 	serie_ipv4libres = append(serie_ipv4libres, fip4)
 	i = i + 1
 print "done!"
+
 
 rango = xrange(1, lastdays+1)
 
@@ -107,17 +108,19 @@ serie_ipv4libres_pred.append(array([]))
 
 dash10_offset = -1
 f = open("tmp/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
+f.write("Fecha,Modelo,Conocido,Limite\n")
 for t in time_series_future:
 	ipv4libres_estimado = polyval(model_poly, rango_pred[t])
 	serie_ipv4libres_pred[-1] = append(serie_ipv4libres_pred[-1], ipv4libres_estimado)
 	serie_temporal_pred[-1] = append(serie_temporal_pred[-1], rango_pred[t])
-	if t < i:
-		if date.fromtimestamp(rango_pred[t]) in fechas:
-			f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+str(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])+","+"2097152\n")
-		else:
-			f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+","+"2097152\n")
-	if t > i-1:
+	int_ipv4libres_estimado=int(round(ipv4libres_estimado))
+
+	if date.fromtimestamp(rango_pred[t]) in fechas:
+		int_serie_ipv4libres=int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+str(int_serie_ipv4libres)+","+"2097152\n")
+	else:
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+","+"2097152\n")
+	
 	print "t: %s, free_ipv4: %s" % (t, ipv4libres_estimado),
 	if ipv4libres_estimado < 0.25*float(dash8) and dash10_offset == -1:
 		dash10_offset =t-lastdays-1
