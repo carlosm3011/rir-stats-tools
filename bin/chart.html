@@ -31,7 +31,8 @@
 				colors:['red', 'blue', '#009124'],
 				series: {
   					1:{lineWidth: 4}
-				}
+				},
+				vAxis: { gridlines: { count: 10 } }
 			};
 			var chart = new google.visualization.LineChart(document.getElementById('chart'));
 			chart.draw(data, options);
