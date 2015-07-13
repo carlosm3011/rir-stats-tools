@@ -139,7 +139,7 @@ last_freeipv4 = freeipv4_series[0]
 print " "
 print "Writing HTML widget...",
 #
-fo = open ("tmp/lacnic-ipv4runout-widget.html", "w")
+fo = open ("html/lacnic-ipv4runout-widget.html", "w")
 fo.write("<html>\n")
 fo.write("<head>\n")
 fo.write('<link href="http://www2.lacnic.net/lacnic/depletion.css" rel="stylesheet" type="text/css">')
@@ -181,7 +181,7 @@ pyplot.annotate("LACNIC reached its last /10 on 2014-06-10", (avg_offset-40, 0.7
 pyplot.hlines(locy, 0, 135, linestyles='dotted')
 pyplot.ylabel("Available IPv4 Space (in /8s)")
 pyplot.xlabel("Time")
-pyplot.savefig("tmp/lacnic-ipv4runout-plot.png", dpi=120)
+pyplot.savefig("html/lacnic-ipv4runout-plot.png", dpi=120)
 print "done!"
 ##################################################################################
 

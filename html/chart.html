@@ -21,7 +21,7 @@
 	} 
 	hoy = yyyy+'-'+mm+'-'+dd;
 	function drawChart() {
-   		$.get("../tmp/pred_ipv4libres_"+hoy+".txt", function(csvString) {
+   		$.get("pred_ipv4libres_"+hoy+".txt", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 	
 			var data = new google.visualization.arrayToDataTable(arrayData);

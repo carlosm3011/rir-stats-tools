@@ -107,7 +107,7 @@ serie_temporal_pred.append(array([]))
 serie_ipv4libres_pred.append(array([]))
 
 dash10_offset = -1
-f = open("tmp/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
+f = open("html/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
 f.write("Fecha,Modelo,Conocido,Limite\n")
 for t in time_series_future:
 	ipv4libres_estimado = polyval(model_poly, rango_pred[t])
