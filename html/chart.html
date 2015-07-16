@@ -25,12 +25,14 @@ body {
 	    mm='0'+mm
 	} 
 	hoy = yyyy+'-'+mm+'-'+dd;
+	
 	function drawChart() {
    		$.get("pred_ipv4libres_"+hoy+".txt", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 	
 			var data = new google.visualization.arrayToDataTable(arrayData);
-			
+			//var runout = arrayData[arrayData.length-1][0];
+			//document.getElementById('h').innerHTML = "phase2-runout-date:"+runout;
 			var options = {
    				title: 'Agotamiento IPv4 fase2',
 				colors:['red', 'blue', '#009124'],
@@ -43,12 +45,23 @@ body {
 			chart.draw(data, options);
 		});
 	}
+	
    </script>
 </head>
 
 <body>
+<script>
+$.getJSON("fechas.json", function(data){
+	var today = data["model-run-date"]
+	document.getElementById('hoy').innerHTML = "Fecha de ejecuci&oacute;n: "+today;
+	var runout = data["phase2-runout-date"]
+	document.getElementById('fin').innerHTML = "Fecha de fin de la fase 2: "+runout;
+});
+</script>
 
-<h4>Fecha de ejecuci&oacute;n: <script>document.write(hoy)</script></h4>
+<h4 id="hoy"></h4>
+
+<h4 id="fin"></h4>
 
 <div id="chart" style="height:1000px"> </div>
 

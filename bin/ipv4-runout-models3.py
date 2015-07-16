@@ -131,7 +131,8 @@ for t in time_series_future:
 		
 print " "
 f.close()
-	
+
+a = open("html/fechas.json", "w")	
 if t < lastdays - 1 + dias_pred - 1:
 	#print "Delta T for dash10 global policy trigger was %s" % (dash10_offset)
 	print "Delta T for dash11 runout is %s" % (t-lastdays-1)
@@ -139,6 +140,9 @@ if t < lastdays - 1 + dias_pred - 1:
 	dash10_offsets.append(dash10_offset)
 	p3_date = date.fromtimestamp(rango_pred[t])
 	print "Expected phase 3 entry date %s" % (p3_date)
+	st = {'model-run-date':str(hoy), 'phase2-runout-date':str(p3_date)}
+	dump = json.dumps(st)
+	a.write(dump)
 else:
 	print "Delta T could not be identified, check for numerity instability"
 	serie_temporal_pred.pop()
