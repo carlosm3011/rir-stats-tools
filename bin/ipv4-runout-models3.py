@@ -108,6 +108,7 @@ serie_ipv4libres_pred.append(array([]))
 
 dash10_offset = -1
 f = open("html/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
+#g = open("tmp/vacios.txt", "w")
 f.write("Fecha,Modelo,Conocido,Limite\n")
 for t in time_series_future:
 	ipv4libres_estimado = polyval(model_poly, rango_pred[t])
@@ -120,6 +121,7 @@ for t in time_series_future:
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+str(int_serie_ipv4libres)+","+"2097152\n")
 	else:
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(ipv4libres_estimado)+","+","+"2097152\n")
+		#g.write(str(date.fromtimestamp(rango_pred[t]))+"\n")
 	
 	print "t: %s, free_ipv4: %s" % (t, ipv4libres_estimado),
 	if ipv4libres_estimado < 0.25*float(dash8) and dash10_offset == -1:
