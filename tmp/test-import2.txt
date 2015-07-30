@@ -1,5 +1,0 @@
-curacao	140000	1492
-saba	8000	1570
-st.eustatius	1500	1642
-st.maarten	80000	1615
-aruba	90000	1515

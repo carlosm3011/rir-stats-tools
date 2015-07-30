@@ -1,5 +1,0 @@
-marcelo,41,125
-joaquin,2,11
-seba,30,98
-gonza,38,110
-martha,59,60
