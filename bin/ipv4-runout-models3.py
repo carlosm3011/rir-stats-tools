@@ -16,6 +16,7 @@ from commons import getfile
 import sys
 import json
 import commons.dprint
+import getopt
 commons.dprint.setAutoFlush()
 
 def parseMongoDate(stringDate):
@@ -82,9 +83,19 @@ print "-- "
 runout_offsets = []
 dash10_offsets = []
 
-model_poly = polyfit(serie_temporal, serie_ipv4libres, 1)
-print "Polynomial degree %s fitted successfully, result is: %s" % (1, model_poly)
+poly_degree = 2
+try:
+	opts, args = getopt.getopt(sys.argv[1:],"d:",["degree="])
+	for o,a in opts:
+		if o in ("-d", "--degree"):
+			poly_degree = int(a)
+except getopt.GetoptError:
+	print './bin/ipv4_runout_models3.py -d <model_degree>'
+	sys.exit(2)
 
+
+model_poly = polyfit(serie_temporal, serie_ipv4libres, poly_degree)
+print "Polynomial degree %s fitted successfully, result is: %s" % (poly_degree, model_poly)
 	
 base_t =int(amax(serie_temporal))
 cero = int(amin(serie_temporal))
