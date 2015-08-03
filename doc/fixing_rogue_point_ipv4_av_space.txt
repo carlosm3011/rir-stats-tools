@@ -1,0 +1,22 @@
+> db["ipv4-available-space"].find().limit(2).pretty()
+{
+        "_id" : 1356629728.429133,
+        "report-date" : 1356629728.429136,
+        "available-slash-8" : 2.920318603515625,
+        "registry" : "lacnic",
+        "available-addresses" : 48994816
+}
+{
+        "_id" : 1356659893.278089,
+        "report-date" : 1356659893.278092,
+        "available-slash-8" : 2.920318603515625,
+        "registry" : "lacnic",
+        "available-addresses" : 48994816
+}
+> 
+
+# para encontrar el freak point
+db["ipv4-available-space"].find( { "available-slash-8": {$gt: 0.25}, "report-date": {$gt: 1404010681.958334 }, "registry": "lacnic"})
+
+# para corregirlo
+db["ipv4-available-space"].update( {"report-date": 1409713200}, { $set: {"available-slash-8": 0.223604, "available-addresses": NumberInt(3751456)}})
