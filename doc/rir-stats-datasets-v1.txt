@@ -1,0 +1,30 @@
+# mvuy12 Mongo Collections
+
+## ris_whois/ris_whois4 and ris_whois/ris_whois6
+
+```
+> db["ris_entries6"].find().limit(3).pretty()
+{
+        "_id" : "1::1/128",
+        "begin" : NumberLong("281474976710656"),
+        "end" : NumberLong("281474976710656"),
+        "first-seen" : 1355227939.020941,
+        "last-seen" : 1393844420.72886,
+        "origin-as" : "42298",
+        "peer-count" : "13",
+        "pfx" : "1::1/128"
+}
+```
+
+```
+{
+        "_id" : "1.40.0.0/16",
+        "begin" : 19398656,
+        "end" : 19464191,
+        "first-seen" : 1355158353.990873,
+        "last-seen" : 1354791620.988094,
+        "origin-as" : "4804",
+        "peer-count" : "102",
+        "pfx" : "1.40.0.0/16"
+}
+```
