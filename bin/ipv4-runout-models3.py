@@ -160,6 +160,23 @@ else:
 	print "Delta T could not be identified, check for numerity instability"
 	serie_temporal_pred.pop()
 	serie_ipv4libres_pred.pop()
+	
+print "Calculating model error..."
+
+largo = xrange(0, len(serie_temporal)-1)
+media_ipv4libres = sum(serie_ipv4libres)/float(len(serie_temporal))
+print media_ipv4libres
+total = 0
+residuo = 0
+
+for i in largo:
+	residuo = residuo + (serie_ipv4libres[i]-serie_ipv4libres_pred[0][i])**2
+	total = total + (serie_ipv4libres[i]-media_ipv4libres)**2
+
+print "%s, %s" % (residuo,total)
+error2 = 1 - residuo/total
+print "done!"
+print "Error2 para modelo de grado %s es %s" % (poly_degree, error2)
 		
 print "--"		
 	
