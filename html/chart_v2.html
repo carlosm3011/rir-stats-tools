@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;;
+}
+</style>
+<title>LACNIC Labs :: Modelado del Agotamiento de IPv4 - Fase 2</title>
+   <script src="https://www.google.com/jsapi"></script>
+   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   <script src="https://jquery-csv.googlecode.com/files/jquery.csv-0.71.js"></script>
+   <script>
+      	google.load("visualization", "1.1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	var hoy = new Date();
+	var dd = hoy.getDate();
+	var mm = hoy.getMonth()+1;
+	var yyyy = hoy.getFullYear();
+	if(dd<10) {
+	    dd='0'+dd
+	} 
+
+	if(mm<10) {
+	    mm='0'+mm
+	} 
+	hoy = yyyy+'-'+mm+'-'+dd;
+	
+	function drawChart() {
+   		$.get("pred_ipv4libres_"+hoy+".txt", function(csvString) {
+			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+	
+			var data = new google.visualization.arrayToDataTable(arrayData);
+			//var runout = arrayData[arrayData.length-1][0];
+			//document.getElementById('h').innerHTML = "phase2-runout-date:"+runout;
+			var options = {
+   				title: 'Agotamiento IPv4 fase2',
+				colors:['red', '#FF8000', '#6A0888', '#0040FF', '#009124'],
+				series: {
+					0:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 1"},
+  					1:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 2"},
+  					2:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 3"},
+  					3:{lineWidth: 4, labelInLegend: "IPv4 libres"},
+  					4:{lineWidth: 1, labelInLegend: "Ultimo /11 para fase 3"}
+  					
+				},
+				vAxis: { gridlines: { count: 10 } }
+			};
+			var chart = new google.visualization.LineChart(document.getElementById('chart'));
+			chart.draw(data, options);
+		});
+	}
+	
+   </script>
+</head>
+
+<body>
+<script>
+$.getJSON("fechas.json", function(data){
+	var today = data["model-run-date"]
+	document.getElementById('hoy').innerHTML = "Fecha de ejecuci&oacute;n: "+today;
+	var runout1 = data["phase2-runout-date-md1"]
+	var runout2 = data["phase2-runout-date-md2"]
+	var runout3 = data["phase2-runout-date-md3"]
+	document.getElementById('1').innerHTML = "Fin de la fase 2 modelo 1: "+runout1;
+	document.getElementById('2').innerHTML = "Fin de la fase 2 modelo 2: "+runout2;
+	document.getElementById('3').innerHTML = "Fin de la fase 2 modelo 3: "+runout3;
+});
+</script>
+
+<h4 id="hoy"></h4>
+<h4 id="1"></h4>
+<h4 id="2"></h4>
+<h4 id="3"></h4>
+</h4>
+
+<div id="chart" style="height:800px"> </div>
+
+</body>
+</html>
