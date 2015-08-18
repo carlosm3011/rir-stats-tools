@@ -143,7 +143,7 @@ for t in time_series_future:
 	sleep(0.005)
 		
 print " "
-print serie_ipv4libres_pred[0]
+#print serie_ipv4libres_pred[0]
 #f.close()
 
 f = open("html/pred_ipv4libres_%s.txt" % (str(hoy)), "w")

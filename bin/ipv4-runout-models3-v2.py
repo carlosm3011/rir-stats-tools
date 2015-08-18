@@ -157,6 +157,7 @@ p3_date_md3 = date.fromtimestamp(serie_temporal_pred[2][-1])
 st = {'model-run-date':str(hoy), 'phase2-runout-date-md1':str(p3_date_md1), 'phase2-runout-date-md2':str(p3_date_md2), 'phase2-runout-date-md3':str(p3_date_md3)}
 dump = json.dumps(st)
 a.write(dump)
+a.close()
 
 rango=xrange(0, len(serie_ipv4libres_pred[0])-1)
 
@@ -186,18 +187,27 @@ print "Calculating model error..."
 
 largo = xrange(0, len(serie_temporal)-1)
 media_ipv4libres = sum(serie_ipv4libres)/float(len(serie_temporal))
-print media_ipv4libres
-total = 0
-residuo = 0
+#print media_ipv4libres
+errores = array([])
 
-for i in largo:
-	residuo = residuo + (serie_ipv4libres[i]-serie_ipv4libres_pred[0][i])**2
-	total = total + (serie_ipv4libres[i]-media_ipv4libres)**2
+for mdl in xrange(0,3):
+	print mdl
+	total = 0
+	residuo = 0
+	for i in largo:
+		residuo = residuo + (serie_ipv4libres[i]-serie_ipv4libres_pred[mdl][i])**2
+		total = total + (serie_ipv4libres[i]-media_ipv4libres)**2
+	#print "%s, %s" % (residuo,total)
+	error2 = 1 - residuo/total
+	errores = append(errores, error2)
+	print "done!"
+	print "Error2 para modelo de grado %s es %s" % (mdl+1, error2)
 
-print "%s, %s" % (residuo,total)
-error2 = 1 - residuo/total
-print "done!"
-print "Error2 para modelo de grado %s es %s" % (poly_degree, error2)
-		
+e = open("html/errores.json", "w")
+st = {'Error mdl 1': errores[0], 'Error mdl 2': errores[1], 'Error mdl 3': errores[2]}
+dump = json.dumps(st)
+e.write(dump)
+e.close()	
+
 print "--"		
 	
