@@ -150,7 +150,7 @@ for md in poly_degree:
 		serie_temporal_pred.pop()
 		serie_ipv4libres_pred.pop()
 		
-a = open("html/fechas.json", "w")
+a = open("html/fechas3.json", "w")
 p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
 p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
 p3_date_md3 = date.fromtimestamp(serie_temporal_pred[2][-1])
@@ -161,7 +161,7 @@ a.close()
 
 rango=xrange(0, len(serie_ipv4libres_pred[0])-1)
 
-f = open("html/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
+f = open("html/pred_ipv4libres3_%s.txt" % (str(hoy)), "w")
 #g = open("tmp/vacios.txt", "w")
 f.write("Fecha,Modelo1,Modelo2,Modelo3,Conocido,Limite\n")
 for t in rango:
