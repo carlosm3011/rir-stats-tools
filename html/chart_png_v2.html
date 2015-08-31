@@ -20,13 +20,14 @@ body {
 	if(dd<10) {
 	    dd='0'+dd
 	} 
+
 	if(mm<10) {
 	    mm='0'+mm
 	} 
 	hoy = yyyy+'-'+mm+'-'+dd;
 	
 	function drawChart() {
-   		$.get("pred_ipv4libres_"+hoy+".txt", function(csvString) {
+   		$.get("pred_ipv4libres3_"+hoy+".txt", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 	
 			var data = new google.visualization.arrayToDataTable(arrayData);
@@ -34,15 +35,24 @@ body {
 			//document.getElementById('h').innerHTML = "phase2-runout-date:"+runout;
 			var options = {
    				title: 'Agotamiento IPv4 fase2',
-				colors:['red', '#0040FF', '#009124'],
+				colors:['red', '#FF8000', '#6A0888', '#0040FF', '#009124'],
 				series: {
-					0:{lineWidth: 1, labelInLegend: "Modelo Predictivo de agotamiento"},
-  					1:{lineWidth: 3, labelInLegend: "IPv4 libres"},
-  					2:{lineWidth: 1, labelInLegend: "Ultimo /11 para fase 3"}
+					0:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 1"},
+  					1:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 2"},
+  					2:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 3"},
+  					3:{lineWidth: 4, labelInLegend: "IPv4 libres"},
+  					4:{lineWidth: 1, labelInLegend: "Ultimo /11 para fase 3"}
 				},
 				vAxis: { gridlines: { count: 10 } }
 			};
-			var chart = new google.visualization.LineChart(document.getElementById('chart'));
+			var chart_div = document.getElementById('chart_div');
+			var chart = new google.visualization.LineChart(chart_div);
+			
+			google.visualization.events.addListener(chart, 'ready', function () {
+        			chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        			console.log(chart_div.innerHTML);
+      			});
+			
 			chart.draw(data, options);
 		});
 	}
@@ -52,19 +62,24 @@ body {
 
 <body>
 <script>
-$.getJSON("fechas.json", function(data){
+$.getJSON("fechas3.json", function(data){
 	var today = data["model-run-date"]
 	document.getElementById('hoy').innerHTML = "Fecha de ejecuci&oacute;n: "+today;
-	var runout = data["phase2-runout-date"]
-	document.getElementById('fin').innerHTML = "Fecha de fin de la fase 2: "+runout;
+	var runout1 = data["phase2-runout-date-md1"]
+	var runout2 = data["phase2-runout-date-md2"]
+	var runout3 = data["phase2-runout-date-md3"]
+	document.getElementById('1').innerHTML = "Fin de la fase 2 modelo 1: "+runout1;
+	document.getElementById('2').innerHTML = "Fin de la fase 2 modelo 2: "+runout2;
+	document.getElementById('3').innerHTML = "Fin de la fase 2 modelo 3: "+runout3;
 });
 </script>
 
 <h4 id="hoy"></h4>
+<h4 id="1"></h4>
+<h4 id="2"></h4>
+<h4 id="3"></h4>
 
-<h4 id="fin"></h4>
-
-<div id="chart" style="height:800px"> </div>
+<div id="chart_div" style="height:800px"> </div>
 
 </body>
 </html>

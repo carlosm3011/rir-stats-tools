@@ -20,6 +20,7 @@ body {
 	if(dd<10) {
 	    dd='0'+dd
 	} 
+
 	if(mm<10) {
 	    mm='0'+mm
 	} 
@@ -42,7 +43,14 @@ body {
 				},
 				vAxis: { gridlines: { count: 10 } }
 			};
-			var chart = new google.visualization.LineChart(document.getElementById('chart'));
+			var chart_div = document.getElementById('chart_div');
+			var chart = new google.visualization.LineChart(chart_div);
+			
+			google.visualization.events.addListener(chart, 'ready', function () {
+        			chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        			console.log(chart_div.innerHTML);
+      			});
+			
 			chart.draw(data, options);
 		});
 	}
@@ -64,7 +72,7 @@ $.getJSON("fechas.json", function(data){
 
 <h4 id="fin"></h4>
 
-<div id="chart" style="height:800px"> </div>
+<div id="chart_div" style="height:800px"> </div>
 
 </body>
 </html>
