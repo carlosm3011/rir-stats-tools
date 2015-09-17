@@ -8,7 +8,7 @@
     
     <title>lib.commons module documentation &mdash; RIR Stat Tools 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,13 +23,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="RIR Stat Tools 0.1 documentation" href="index.html" />
-    <link rel="next" title="lib.delegated module documentation" href="delegated.html" />
+    <link rel="next" title="lib.commons.dumpimport module documentation" href="dumpimport.html" />
     <link rel="prev" title="Welcome to RIR Stat Tools’s documentation!" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -39,19 +39,19 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="delegated.html" title="lib.delegated module documentation"
+          <a href="dumpimport.html" title="lib.commons.dumpimport module documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to RIR Stat Tools’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="lib-commons-module-documentation">
 <h1>lib.commons module documentation<a class="headerlink" href="#lib-commons-module-documentation" title="Permalink to this headline">¶</a></h1>
@@ -68,7 +68,7 @@
 <span id="getfile"></span><h2>getfile<a class="headerlink" href="#module-commons.getfile" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="commons.getfile.getfile">
-<tt class="descclassname">commons.getfile.</tt><tt class="descname">getfile</tt><big>(</big><em>w_url</em>, <em>w_file_name=None</em>, <em>w_update=3600</em>, <em>ch_size=10240</em><big>)</big><a class="reference internal" href="_modules/commons/getfile.html#getfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.getfile.getfile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">commons.getfile.</code><code class="descname">getfile</code><span class="sig-paren">(</span><em>w_url</em>, <em>w_file_name=None</em>, <em>w_update=3600</em>, <em>ch_size=10240</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/getfile.html#getfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.getfile.getfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a file object pointed by w_url and stores it on local file w_file_name.
 The w_update parameter marks how old the file can be. Files are only downloaded 
 if they are older than w_update seconds.</p>
@@ -98,14 +98,19 @@ getfile will choose a random temp file name and, on success, will return this na
 Generic logging and debug printing utilities.</p>
 <dl class="class">
 <dt id="commons.dprint.dprint">
-<em class="property">class </em><tt class="descclassname">commons.dprint.</tt><tt class="descname">dprint</tt><big>(</big><em>w_sys_loglevel=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">commons.dprint.</code><code class="descname">dprint</code><span class="sig-paren">(</span><em>w_sys_loglevel=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/dprint.html#dprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="commons.dprint.dprint.log">
-<tt class="descname">log</tt><big>(</big><em>w_msg</em>, <em>w_level=3</em><big>)</big><a class="reference internal" href="_modules/commons/dprint.html#dprint.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint.log" title="Permalink to this definition">¶</a></dt>
+<code class="descname">log</code><span class="sig-paren">(</span><em>w_msg</em>, <em>w_level=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/dprint.html#dprint.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.dprint.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log message to standard error stream.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="commons.dprint.setAutoFlush">
+<code class="descclassname">commons.dprint.</code><code class="descname">setAutoFlush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/dprint.html#setAutoFlush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.dprint.setAutoFlush" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-commons.utils">
@@ -114,14 +119,14 @@ Generic logging and debug printing utilities.</p>
 <p>&#64;author: marcelo</p>
 <dl class="function">
 <dt id="commons.utils.get_tmp_file_name">
-<tt class="descclassname">commons.utils.</tt><tt class="descname">get_tmp_file_name</tt><big>(</big><em>w_name=None</em><big>)</big><a class="reference internal" href="_modules/commons/utils.html#get_tmp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.get_tmp_file_name" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">commons.utils.</code><code class="descname">get_tmp_file_name</code><span class="sig-paren">(</span><em>w_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/utils.html#get_tmp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.get_tmp_file_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns a full path to a temp file name, using the current system properties
 if filename is None then a random name is created</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="commons.utils.json_load">
-<tt class="descclassname">commons.utils.</tt><tt class="descname">json_load</tt><big>(</big><em>w_file_name</em><big>)</big><a class="reference internal" href="_modules/commons/utils.html#json_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.json_load" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">commons.utils.</code><code class="descname">json_load</code><span class="sig-paren">(</span><em>w_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/commons/utils.html#json_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#commons.utils.json_load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -131,7 +136,7 @@ if filename is None then a random name is created</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -147,14 +152,16 @@ if filename is None then a random name is created</p>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Welcome to RIR Stat Tools&#8217;s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="delegated.html"
-                        title="next chapter">lib.delegated module documentation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/commons.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="dumpimport.html"
+                        title="next chapter">lib.commons.dumpimport module documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/commons.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -171,7 +178,7 @@ if filename is None then a random name is created</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -181,17 +188,17 @@ if filename is None then a random name is created</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="delegated.html" title="lib.delegated module documentation"
+          <a href="dumpimport.html" title="lib.commons.dumpimport module documentation"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to RIR Stat Tools’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
