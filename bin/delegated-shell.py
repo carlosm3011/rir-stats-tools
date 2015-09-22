@@ -4,13 +4,14 @@ Created on Sep 25, 2013
 
 Changed on Oct 8, 2014
 
-@author: carlos
+@author: carlos martinez (carlos @ lacnic.net)
 '''
 import cmd
 import readline
 import sys
 import os
 import ipaddr
+import json
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -27,7 +28,7 @@ import commons.statkeeper
 program_license = "This program is provided AS IS. (c) Carlos Martinez, carlos@lacnic.net"
 program_version = "0.1.1"
 release_date = "2013-09-25"
-changed_date = "2013-09-25"
+changed_date = "2014-10-08"
 program_version_message = "Version %s, released %s, changed %s" % (program_version, release_date, changed_date)
 
 ## delegated shell ##################################
@@ -93,7 +94,7 @@ class DelegatedShell(cmd.Cmd):
                     print "|".join(values)
                 else:
                     print "R%s: %s" % (c, dict(row) )
-                    self.result_stack.append(row)
+                    self.result_stack.append(dict(row))
                 c = c + 1
         except:
             # raise
@@ -122,7 +123,9 @@ class DelegatedShell(cmd.Cmd):
         """
         Save result stack in JSON format.
         """
-        pass
+        json_stack = json.dumps(self.result_stack)
+        # json_stack = self.result_stack
+        print json_stack
     # end
 
     #
