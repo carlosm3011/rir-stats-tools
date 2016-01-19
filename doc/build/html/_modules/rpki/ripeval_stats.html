@@ -8,7 +8,7 @@
     
     <title>rpki.ripeval_stats &mdash; RIR Stat Tools 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="RIR Stat Tools 0.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -37,15 +37,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for rpki.ripeval_stats</h1><div class="highlight"><pre>
 <span class="c">#===============================================================================</span>
@@ -82,6 +82,8 @@
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">ipaddr</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="c">### BEGIN</span>
 <div class="viewcode-block" id="BatchValidationResults"><a class="viewcode-back" href="../../rpki.html#rpki.ripeval_stats.BatchValidationResults">[docs]</a><span class="k">class</span> <span class="nc">BatchValidationResults</span><span class="p">:</span>
@@ -154,8 +156,20 @@
                             <span class="k">raise</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;valid_from&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;valid_until&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    
+                    <span class="c">#record[&#39;istart&#39;] = 0</span>
+                    <span class="c">#record[&#39;iend&#39;] = 0</span>
+                    
+                    <span class="n">pfx</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="o">.</span><span class="n">IPNetwork</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">])</span>                    
+                    <span class="k">if</span> <span class="n">pfx</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                        <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
+                        <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">pfx</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                        <span class="n">pfx_norm_base</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
+                        <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">network</span><span class="p">)</span> <span class="o">/</span> <span class="n">pfx_norm_base</span>
+                        <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span> <span class="o">/</span> <span class="n">pfx_norm_base</span>                    
+                    
+                    
                     <span class="c"># insert into db</span>
                     <span class="c">#print(record)</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -218,9 +232,9 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -237,7 +251,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -246,13 +260,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

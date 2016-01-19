@@ -8,7 +8,7 @@
     
     <title>lib.delegated module documentation &mdash; RIR Stat Tools 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,13 +23,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="RIR Stat Tools 0.1 documentation" href="index.html" />
     <link rel="next" title="lib.rpki.ripeval_stats module documentation" href="rpki.html" />
-    <link rel="prev" title="lib.commons module documentation" href="commons.html" /> 
+    <link rel="prev" title="lib.commons.dumpimport module documentation" href="dumpimport.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -42,16 +42,16 @@
           <a href="rpki.html" title="lib.rpki.ripeval_stats module documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="commons.html" title="lib.commons module documentation"
+          <a href="dumpimport.html" title="lib.commons.dumpimport module documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="lib-delegated-module-documentation">
 <h1>lib.delegated module documentation<a class="headerlink" href="#lib-delegated-module-documentation" title="Permalink to this headline">¶</a></h1>
@@ -68,73 +68,74 @@ stat files, those that can be found at the FTP servers of each RIR.</p>
 <div class="section" id="module-delegated.api">
 <span id="delegated-api"></span><h2>Delegated API<a class="headerlink" href="#module-delegated.api" title="Permalink to this headline">¶</a></h2>
 <p>Delegated API Class
-(c) <a class="reference external" href="mailto:carlos&#37;&#52;&#48;lacnic&#46;net">carlos<span>&#64;</span>lacnic<span>&#46;</span>net</a></p>
+(c) <a class="reference external" href="mailto:carlos&#37;&#52;&#48;lacnic&#46;net">carlos<span>&#64;</span>lacnic<span>&#46;</span>net</a>
+2013-0829</p>
 <dl class="class">
 <dt id="delegated.api.Delegated">
-<em class="property">class </em><tt class="descclassname">delegated.api.</tt><tt class="descname">Delegated</tt><big>(</big><em>w_file</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">delegated.api.</code><code class="descname">Delegated</code><span class="sig-paren">(</span><em>w_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="delegated.api.Delegated.cnt">
-<tt class="descname">cnt</tt><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.cnt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cnt</code><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.cnt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.file">
-<tt class="descname">file</tt><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">file</code><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.filename">
-<tt class="descname">filename</tt><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.filename" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filename</code><em class="property"> = None</em><a class="headerlink" href="#delegated.api.Delegated.filename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.filters">
-<tt class="descname">filters</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.filters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filters</code><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.filters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="delegated.api.Delegated.raw_query">
-<tt class="descname">raw_query</tt><big>(</big><em>w_sql</em>, <em>w_parameters={}</em><big>)</big><a class="headerlink" href="#delegated.api.Delegated.raw_query" title="Permalink to this definition">¶</a></dt>
+<code class="descname">raw_query</code><span class="sig-paren">(</span><em>w_sql</em>, <em>w_parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated.raw_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.raw_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>runs a GENERIC sql query returning a db cursor</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="delegated.api.Delegated.read_delegated">
-<tt class="descname">read_delegated</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.read_delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.read_delegated" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_delegated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated.read_delegated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.read_delegated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the stats file specified in the constructor.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.record_lines">
-<tt class="descname">record_lines</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.record_lines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">record_lines</code><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.record_lines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="delegated.api.Delegated.resource_find_exact">
-<tt class="descname">resource_find_exact</tt><big>(</big><em>w_query</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_exact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_exact" title="Permalink to this definition">¶</a></dt>
+<code class="descname">resource_find_exact</code><span class="sig-paren">(</span><em>w_query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_exact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_exact" title="Permalink to this definition">¶</a></dt>
 <dd><p>looks for exact matches inside the delegated records</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="delegated.api.Delegated.resource_find_inside">
-<tt class="descname">resource_find_inside</tt><big>(</big><em>w_resource</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_inside" title="Permalink to this definition">¶</a></dt>
+<code class="descname">resource_find_inside</code><span class="sig-paren">(</span><em>w_resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_find_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_find_inside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Looks for w_resource inside assignments</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="delegated.api.Delegated.resource_query">
-<tt class="descname">resource_query</tt><big>(</big><em>query</em>, <em>parameters</em><big>)</big><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_query" title="Permalink to this definition">¶</a></dt>
+<code class="descname">resource_query</code><span class="sig-paren">(</span><em>query</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/delegated/api.html#Delegated.resource_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delegated.api.Delegated.resource_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>runs a select query returning a db cursor</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.summary_lines">
-<tt class="descname">summary_lines</tt><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.summary_lines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">summary_lines</code><em class="property"> = []</em><a class="headerlink" href="#delegated.api.Delegated.summary_lines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="delegated.api.Delegated.version_line">
-<tt class="descname">version_line</tt><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.version_line" title="Permalink to this definition">¶</a></dt>
+<code class="descname">version_line</code><em class="property"> = {}</em><a class="headerlink" href="#delegated.api.Delegated.version_line" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -146,7 +147,7 @@ stat files, those that can be found at the FTP servers of each RIR.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -157,17 +158,19 @@ stat files, those that can be found at the FTP servers of each RIR.</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="commons.html"
-                        title="previous chapter">lib.commons module documentation</a></p>
+  <p class="topless"><a href="dumpimport.html"
+                        title="previous chapter">lib.commons.dumpimport module documentation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="rpki.html"
                         title="next chapter">lib.rpki.ripeval_stats module documentation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/delegated.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/delegated.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -184,7 +187,7 @@ stat files, those that can be found at the FTP servers of each RIR.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -197,14 +200,14 @@ stat files, those that can be found at the FTP servers of each RIR.</p>
           <a href="rpki.html" title="lib.rpki.ripeval_stats module documentation"
              >next</a> |</li>
         <li class="right" >
-          <a href="commons.html" title="lib.commons module documentation"
+          <a href="dumpimport.html" title="lib.commons.dumpimport module documentation"
              >previous</a> |</li>
-        <li><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

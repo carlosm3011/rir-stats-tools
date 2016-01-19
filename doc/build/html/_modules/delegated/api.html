@@ -8,7 +8,7 @@
     
     <title>delegated.api &mdash; RIR Stat Tools 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="RIR Stat Tools 0.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -37,15 +37,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for delegated.api</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
@@ -78,6 +78,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Delegated API Class</span>
 <span class="sd">(c) carlos@lacnic.net</span>
+<span class="sd">2013-0829</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">csv</span>
@@ -115,7 +116,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;&#39;&#39; CREATE TABLE resources (registry text, cc text, type text, start text, value text, &#39;&#39;&#39;</span> <span class="o">+</span> 
-                                <span class="sd">&#39;&#39;&#39; date text, status text, prefix text, istart unsigned big int, iend unsigned big int) &#39;&#39;&#39;</span><span class="p">)</span>
+                                <span class="sd">&#39;&#39;&#39; date text, status text, prefix text, istart unsigned big int, iend unsigned big int, equiv int) &#39;&#39;&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span>
@@ -134,19 +135,22 @@
         <span class="n">csv_r</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">&quot;|&quot;</span><span class="p">)</span>
         
         <span class="c"># load version line</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">row</span> <span class="o">=</span> <span class="n">csv_r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> 
-            <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;registry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;serial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;records&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;startdate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;enddate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;UTCoffset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">dprint</span><span class="p">(</span><span class="s">&quot;Error importing line: [</span><span class="si">%s</span><span class="s">]</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">))</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">csv_r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> 
+                <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;registry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;serial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;records&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;startdate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;enddate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version_line</span><span class="p">[</span><span class="s">&#39;UTCoffset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">dprint</span><span class="p">(</span><span class="s">&quot;Error importing line: [</span><span class="si">%s</span><span class="s">]</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">))</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c">##</span>
         
         <span class="c"># load summary lines</span>
         <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
@@ -181,21 +185,27 @@
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pfx</span><span class="p">)</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;equiv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">256</span> <span class="o">+</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;ipv6&#39;</span><span class="p">:</span>
                     <span class="n">pfx_norm_base</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
                     <span class="n">pfx</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="o">.</span><span class="n">IPv6Network</span><span class="p">(</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;start&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="p">)</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pfx</span><span class="p">)</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">network</span><span class="p">)</span> <span class="o">/</span> <span class="n">pfx_norm_base</span>
-                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span> <span class="o">/</span> <span class="n">pfx_norm_base</span>                    
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pfx</span><span class="o">.</span><span class="n">broadcast</span><span class="p">)</span> <span class="o">/</span> <span class="n">pfx_norm_base</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;equiv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">32</span><span class="p">)</span>                     
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;na/asn&#39;</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;istart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;start&#39;</span><span class="p">])</span>
                     <span class="n">record</span><span class="p">[</span><span class="s">&#39;iend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;start&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="n">record</span><span class="p">[</span><span class="s">&#39;equiv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;na&#39;</span>
                 <span class="c">#</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;INSERT INTO resources VALUES (:registry, :cc, :type, :start, :value, :date, :status, &quot;</span> <span class="o">+</span> 
-                                    <span class="s">&quot; :prefix, :istart, :iend)&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+                                    <span class="s">&quot; :prefix, :istart, :iend, :equiv)&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
                 <span class="c">#</span>
                 <span class="n">row</span> <span class="o">=</span> <span class="n">csv_r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;ERROR parsing line from delegated file: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">))</span>
+                <span class="k">raise</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="c"># print &quot;*&quot;</span>
                 <span class="n">row</span> <span class="o">=</span> <span class="n">csv_r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
@@ -214,7 +224,7 @@
     <span class="c">### BEGIN</span></div>
 <div class="viewcode-block" id="Delegated.resource_query"><a class="viewcode-back" href="../../delegated.html#delegated.api.Delegated.resource_query">[docs]</a>    <span class="k">def</span> <span class="nf">resource_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        runs a generic query returning a db cursor</span>
+<span class="sd">        runs a select query returning a db cursor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>            
             <span class="c">#</span>
@@ -229,6 +239,27 @@
             <span class="k">return</span> <span class="bp">None</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span>  
+    <span class="c">### END</span>
+    
+    <span class="c">### BEGIN</span></div>
+<div class="viewcode-block" id="Delegated.raw_query"><a class="viewcode-back" href="../../delegated.html#delegated.api.Delegated.raw_query">[docs]</a>    <span class="k">def</span> <span class="nf">raw_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_sql</span><span class="p">,</span> <span class="n">w_parameters</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        runs a GENERIC sql query returning a db cursor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>            
+            <span class="c">#</span>
+            <span class="c"># sql1 = &quot;SELECT * FROM resources WHERE %s&quot; % (query)</span>
+            <span class="n">sql1</span> <span class="o">=</span> <span class="n">w_sql</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql1</span><span class="p">,</span> <span class="n">w_parameters</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">res</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">DatabaseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">dprint</span><span class="p">(</span><span class="s">&quot;SQL error: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sql1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>          
     <span class="c">### END</span>
 
     <span class="c">### BEGIN</span></div>
@@ -298,9 +329,9 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -317,7 +348,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -326,13 +357,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">RIR Stat Tools 0.1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2013, Carlos Martinez.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

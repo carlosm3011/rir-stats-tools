@@ -28,7 +28,7 @@ def parseMongoDate(stringDate):
 
 hoy = date.today()
 print hoy
-fecha_fase2 = date(2014, 6, 9)
+fecha_fase2 = date(2014, 7, 1)
 lastdays = (hoy - fecha_fase2).days
 print lastdays 
 dias_pred = 600

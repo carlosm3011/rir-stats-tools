@@ -29,6 +29,8 @@ def parseMongoDate(stringDate):
 hoy = date.today()
 print hoy
 fecha_fase2 = date(2014, 6, 9)
+# fecha_fase2 = date(2015, 4, 19)
+poly_degree = xrange(1,4)
 lastdays = (hoy - fecha_fase2).days
 print lastdays 
 dias_pred = 600
@@ -84,7 +86,6 @@ print "-- "
 runout_offsets = []
 dash10_offsets = []
 
-poly_degree = xrange(1,4)
 #try:
 #	opts, args = getopt.getopt(sys.argv[1:],"d:",["degree="])
 #	for o,a in opts:
@@ -148,14 +149,17 @@ for md in poly_degree:
 		
 	else:
 		print "Delta T could not be identified, check for numerity instability"
-		serie_temporal_pred.pop()
-		serie_ipv4libres_pred.pop()
+		#serie_temporal_pred.pop()
+		#serie_ipv4libres_pred.pop()
 		
 a = open("html/fechas3.json", "w")
 p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
 p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
 p3_date_md3 = date.fromtimestamp(serie_temporal_pred[2][-1])
-st = {'model-run-date':str(hoy), 'phase2-runout-date-md1':str(p3_date_md1), 'phase2-runout-date-md2':str(p3_date_md2), 'phase2-runout-date-md3':str(p3_date_md3)}
+st = {'model-run-date':str(hoy), 
+      'phase2-runout-date-md1':str(p3_date_md1), 
+      'phase2-runout-date-md2':str(p3_date_md2),
+      'phase2-runout-date-md3':str(p3_date_md3)}
 dump = json.dumps(st)
 a.write(dump)
 a.close()
