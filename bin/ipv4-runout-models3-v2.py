@@ -31,9 +31,10 @@ print hoy
 fecha_fase2 = date(2014, 6, 9)
 lastdays = (hoy - fecha_fase2).days
 print lastdays 
-dias_pred = 300
+dias_pred = 600
 dash8 = pow(2,24)
-pool_reservado = pow(2,32-11)
+# pool_reservado = pow(2,32-11)
+pool_reservado = 0
 ipv4libres_tmp = "tmp/reports_freespace.txt"
 
 
@@ -171,16 +172,16 @@ for t in rango:
 		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 		int_serie_ipv4libres=int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+str(int_serie_ipv4libres)+","+"2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+str(int_serie_ipv4libres)+","+str(pool_reservado)+"\n")
 	elif t < len(serie_ipv4libres_pred[1]) and t < len(serie_ipv4libres_pred[2]):
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+","+"2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+","+str(pool_reservado)+"\n")
 	elif t < len(serie_ipv4libres_pred[1]):
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+",,,2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+",,,%s\n"%(str(pool_reservado)))
 	else:
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,,,2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,,,%s\n" % (str(pool_reservado)))
 f.close()
 	
 print "Calculating model error..."
@@ -194,6 +195,7 @@ for mdl in xrange(0,3):
 	print mdl
 	total = 0
 	residuo = 0
+	#%% print "a%s" % (serie_ipv4libres.length())
 	for i in largo:
 		residuo = residuo + (serie_ipv4libres[i]-serie_ipv4libres_pred[mdl][i])**2
 		total = total + (serie_ipv4libres[i]-media_ipv4libres)**2

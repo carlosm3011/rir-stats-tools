@@ -31,9 +31,10 @@ print hoy
 fecha_fase2 = date(2014, 6, 9)
 lastdays = (hoy - fecha_fase2).days
 print lastdays 
-dias_pred = 300
+dias_pred = 600
 dash8 = pow(2,24)
-pool_reservado = pow(2,32-11)
+# pool_reservado = pow(2,32-11)
+pool_reservado = 0
 ipv4libres_tmp = "tmp/reports_freespace.txt"
 
 
@@ -153,9 +154,9 @@ for t in xrange(0, len(serie_ipv4libres_pred[0])-1):
 	int_ipv4libres_estimado=int(round(serie_ipv4libres_pred[0][t]))
 	if date.fromtimestamp(rango_pred[t]) in fechas:
 		int_serie_ipv4libres=int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+str(int_serie_ipv4libres)+","+"2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+str(int_serie_ipv4libres)+","+str(pool_reservado)+"\n")
 	else:
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+","+"2097152\n")
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado)+","+","+str(pool_reservado)+"\n")
 f.close()
 
 a = open("html/fechas.json", "w")	

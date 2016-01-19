@@ -164,7 +164,8 @@ po = pyplot.plot(time_series, freeipv4_series, linewidth=2)
 for x in xrange(0, len(time_series_pred)):
     po = pyplot.plot(time_series_pred[x], freeipv4_series_pred[x], 'r-')
 #
-locx = range(15, max(runout_offsets)+15, 30)
+# locx = range(15, max(runout_offsets)+15, 30)
+locx = range(15, 760, 30)
 pyplot.xticks(locx, [base_date + timedelta(x) for x in locx])
 #
 locy, yl = pyplot.yticks()
