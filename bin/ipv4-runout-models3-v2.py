@@ -181,6 +181,7 @@ for t in rango:
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+","+str(pool_reservado)+"\n")
+		#g.write(str(date.fromtimestamp(rango_pred[t]))+"\n")
 	elif t < len(serie_ipv4libres_pred[1]):
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+",,,%s\n"%(str(pool_reservado)))

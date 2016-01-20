@@ -68,13 +68,24 @@ $.getJSON("fechas3.json", function(data){
 });
 </script>
 
+<script>
+$.getJSON("errores.json", function(data){
+	var e1 = data["Error mdl 1"]
+	var e2 = data["Error mdl 2"]
+	var e3 = data["Error mdl 3"]
+	document.getElementById('4').innerHTML = "Factor de error: "+e1;
+	document.getElementById('5').innerHTML = "Factor de error: "+e2;
+	document.getElementById('6').innerHTML = "Factor de error: "+e3;
+});
+</script>
+<div>
 <h4 id="hoy"></h4>
-<h4 id="1"></h4>
-<h4 id="2"></h4>
-<h4 id="3"></h4>
-</h4>
+<div> <h4 id="1" ></h4> <h5 id="4" ></h5></div>
+<div><h4 id="2"></h4> <h5 id="5"></h5></div>
+<div><h4 id="3"></h4> <h5 id="6"></h5></div>
+</div>
 
-<div id="chart" style="height:800px"> </div>
+<div id="chart" style="heigth:800px"> </div>
 
 </body>
 </html>
