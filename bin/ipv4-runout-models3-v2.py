@@ -106,6 +106,7 @@ fechas = []
 for f in xrange(0, len(serie_temporal)):
 	fechas.append(date.fromtimestamp(serie_temporal[f]))
 
+fines = array([])
 for md in poly_degree:
 	model_poly = polyfit(serie_temporal, serie_ipv4libres, md)
 	print "Polynomial degree %s fitted successfully, result is: %s" % (md, model_poly)
@@ -145,27 +146,18 @@ for md in poly_degree:
 		runout_offsets.append(t)
 		dash10_offsets.append(dash10_offset)
 		p3_date = date.fromtimestamp(rango_pred[t])
+		fines = append(fines,rango_pred[t])
 		print "Expected phase 3 entry date %s" % (p3_date)
 		
 	else:
 		print "Delta T could not be identified, check for numerity instability"
 		#serie_temporal_pred.pop()
 		#serie_ipv4libres_pred.pop()
-		
-a = open("html/fechas3.json", "w")
-p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
-p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
-p3_date_md3 = date.fromtimestamp(serie_temporal_pred[2][-1])
-st = {'model-run-date':str(hoy), 
-      'phase2-runout-date-md1':str(p3_date_md1), 
-      'phase2-runout-date-md2':str(p3_date_md2),
-      'phase2-runout-date-md3':str(p3_date_md3)}
-dump = json.dumps(st)
-a.write(dump)
-a.close()
+#print "%s" % (fines[0])
 
 rango=xrange(0, len(serie_ipv4libres_pred[0])-1)
 
+#Generacion de datos
 f = open("html/pred_ipv4libres3_%s.txt" % (str(hoy)), "w")
 #g = open("tmp/vacios.txt", "w")
 f.write("Fecha,Modelo1,Modelo2,Modelo3,Conocido,Limite\n")
@@ -210,11 +202,38 @@ for mdl in xrange(0,3):
 	print "done!"
 	print "Error2 para modelo de grado %s es %s" % (mdl+1, error2)
 
+suma = errores[0]+errores[1]+errores[2]
+res = 0
+for i in (0,1,2):
+	wi = errores[i]/suma
+	res = res+wi*fines[i]
+	
+print "%s" % (date.fromtimestamp(res))
+
+#Generacion de json para fechas		
+a = open("html/fechas3.json", "w")
+p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
+p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
+p3_date_md3 = date.fromtimestamp(serie_temporal_pred[2][-1])
+p3_pond = date.fromtimestamp(res)
+st = {'model-run-date':str(hoy), 
+      'phase2-runout-date-md1':str(p3_date_md1), 
+      'phase2-runout-date-md2':str(p3_date_md2),
+      'phase2-runout-date-md3':str(p3_date_md3),
+      'Error mdl 1': errores[0], 
+      'Error mdl 2': errores[1], 
+      'Error mdl 3': errores[2],
+      'Fecha ponderada': str(p3_pond)}
+dump = json.dumps(st)
+a.write(dump)
+a.close()
+
 e = open("html/errores.json", "w")
 st = {'Error mdl 1': errores[0], 'Error mdl 2': errores[1], 'Error mdl 3': errores[2]}
 dump = json.dumps(st)
 e.write(dump)
-e.close()	
+e.close()
+	
 
 print "--"		
 	
