@@ -27,18 +27,14 @@ def parseMongoDate(stringDate):
 	return timestamp
 
 hoy = date.today()
-print hoy
 fecha_fase2 = date(2014, 6, 9)
-# fecha_fase2 = date(2015, 4, 19)
 poly_degree = xrange(1,4)
 lastdays = (hoy - fecha_fase2).days
 print lastdays 
 dias_pred = 600
 dash8 = pow(2,24)
-# pool_reservado = pow(2,32-11)
 pool_reservado = 0
 ipv4libres_tmp = "tmp/reports_freespace.txt"
-
 
 #fetch data
 print "Fetching IPv4 allocation data...",
@@ -65,7 +61,6 @@ for row in reversed(datos['rows']):
 	i = i + 1
 print "done!"
 
-
 rango = xrange(1, lastdays+1)
 
 for r in rango:
@@ -75,11 +70,8 @@ for r in rango:
 
 print date.fromtimestamp(serie_temporal_corrida[0])
 print date.fromtimestamp(serie_temporal_corrida[-1])
-#print serie_temporal[0]
 
 print "%s entries loaded." % (i)
-
-#print serie_ipv4libres[0]
 		
 print "Corriendo modelos:"
 print "-- "
@@ -106,24 +98,17 @@ fechas = []
 for f in xrange(0, len(serie_temporal)):
 	fechas.append(date.fromtimestamp(serie_temporal[f]))
 
+#Armado de los polinomios y prediccion
 fines = array([])
 for md in poly_degree:
 	model_poly = polyfit(serie_temporal, serie_ipv4libres, md)
 	print "Polynomial degree %s fitted successfully, result is: %s" % (md, model_poly)
-	
 	base_t =int(amax(serie_temporal))
 	cero = int(amin(serie_temporal))
-
 	time_series_future = xrange(0, len(rango_pred))
-#print time_series_future
-	
 	serie_temporal_pred.append(array([]))
 	serie_ipv4libres_pred.append(array([]))
-
 	dash10_offset = -1
-#f = open("html/pred_ipv4libres_%s.txt" % (str(hoy)), "w")
-#g = open("tmp/vacios.txt", "w")
-
 	for t in time_series_future:
 		ipv4libres_estimado = polyval(model_poly, rango_pred[t])
 		serie_ipv4libres_pred[-1] = append(serie_ipv4libres_pred[-1], ipv4libres_estimado)
@@ -135,13 +120,10 @@ for md in poly_degree:
 		if ipv4libres_estimado < pool_reservado:
 			break
 		print '\r',
-		sleep(0.005)
-		
+		sleep(0.005)		
 	print " "
-	
-		
+			
 	if t < lastdays - 1 + dias_pred - 1:
-	#print "Delta T for dash10 global policy trigger was %s" % (dash10_offset)
 		print "Delta T for dash11 runout is %s" % (t-lastdays-1)
 		runout_offsets.append(t)
 		dash10_offsets.append(dash10_offset)
@@ -151,19 +133,15 @@ for md in poly_degree:
 		
 	else:
 		print "Delta T could not be identified, check for numerity instability"
-		#serie_temporal_pred.pop()
-		#serie_ipv4libres_pred.pop()
-#print "%s" % (fines[0])
 
 rango=xrange(0, len(serie_ipv4libres_pred[0])-1)
 
-#Generacion de datos
+#Guardando datos en archivos
 f = open("html/pred_ipv4libres3_%s.txt" % (str(hoy)), "w")
 #g = open("tmp/vacios.txt", "w")
 f.write("Fecha,Modelo1,Modelo2,Modelo3,Conocido,Limite\n")
 for t in rango:
-	int_ipv4libres_estimado1=int(round(serie_ipv4libres_pred[0][t]))
-	
+	int_ipv4libres_estimado1=int(round(serie_ipv4libres_pred[0][t]))	
 	if date.fromtimestamp(rango_pred[t]) in fechas and t < len(serie_ipv4libres_pred[1]) and t < len(serie_ipv4libres_pred[2]):
 		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
@@ -182,26 +160,24 @@ for t in rango:
 f.close()
 	
 print "Calculating model error..."
-
+#Calculando el error
 largo = xrange(0, len(serie_temporal)-1)
 media_ipv4libres = sum(serie_ipv4libres)/float(len(serie_temporal))
-#print media_ipv4libres
-errores = array([])
 
+errores = array([])
 for mdl in xrange(0,3):
 	print mdl
 	total = 0
 	residuo = 0
-	#%% print "a%s" % (serie_ipv4libres.length())
 	for i in largo:
 		residuo = residuo + (serie_ipv4libres[i]-serie_ipv4libres_pred[mdl][i])**2
 		total = total + (serie_ipv4libres[i]-media_ipv4libres)**2
-	#print "%s, %s" % (residuo,total)
 	error2 = 1 - residuo/total
 	errores = append(errores, error2)
 	print "done!"
 	print "Error2 para modelo de grado %s es %s" % (mdl+1, error2)
 
+#Calculando la fecha promedio ponderada
 suma = errores[0]+errores[1]+errores[2]
 res = 0
 for i in (0,1,2):
@@ -210,7 +186,7 @@ for i in (0,1,2):
 	
 print "%s" % (date.fromtimestamp(res))
 
-#Generacion de json para fechas		
+#Generacion de json para fechas	y errores	
 a = open("html/fechas3.json", "w")
 p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
 p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
