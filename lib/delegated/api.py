@@ -29,6 +29,9 @@
 Delegated API Class
 (c) carlos@lacnic.net
 2013-0829
+
+Changed:
+2016-04-20 (added uid)
 """
 
 import csv
@@ -65,8 +68,8 @@ class Delegated:
             self.conn = sqlite3.connect(':memory:')
             self.conn.row_factory = sqlite3.Row
             self.cursor = self.conn.cursor()
-            self.cursor.execute(''' CREATE TABLE resources (registry text, cc text, type text, start text, value text, ''' + 
-                                ''' date text, status text, prefix text, istart unsigned big int, iend unsigned big int, equiv int) ''')
+            self.cursor.execute(''' CREATE TABLE resources (registry text, cc text, type text, start text, value text,  ''' + 
+                                ''' date text, status text, prefix text, istart unsigned big int, iend unsigned big int, equiv int, uid text) ''')
             self.conn.commit()
         except:
             raise
@@ -126,7 +129,8 @@ class Delegated:
                             'start': row[3].strip(),
                             'value': row[4].strip(),
                             'date': row[5].strip(),
-                            'status': row[6].strip()
+                            'status': row[6].strip(),
+                            'uid': row[7].strip() if len(row)>7 else "0"
                           }
                 # insert into db
                 if record['type'] == 'ipv4':
@@ -150,7 +154,7 @@ class Delegated:
                     record['equiv'] = 'na'
                 #
                 self.cursor.execute("INSERT INTO resources VALUES (:registry, :cc, :type, :start, :value, :date, :status, " + 
-                                    " :prefix, :istart, :iend, :equiv)", record)
+                                    " :prefix, :istart, :iend, :equiv, :uid)", record)
                 #
                 row = csv_r.next()
             except ValueError:
