@@ -71,6 +71,14 @@ class DelegatedShell(cmd.Cmd):
         pass
 
     #
+    def do_quit(self, line):
+	"""
+	Quit delegated-shell
+	"""
+	dp.log("Thanks for using delegated-shell\n")
+	sys.exit(0)
+
+    #
     def do_select(self, line):
         """
         Perform a query against the in-memory sqlite3 database. The table name to be used is 'resources'.
