@@ -1,7 +1,7 @@
 '''
 Created on Sep 18, 2013
 
-@author: marcelo
+@author: marcelo, 
 
 @todo: better automation
 '''
