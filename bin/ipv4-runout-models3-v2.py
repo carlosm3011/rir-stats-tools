@@ -16,7 +16,7 @@ from commons import getfile
 import sys
 import json
 import commons.dprint
-import getopt
+import os
 commons.dprint.setAutoFlush()
 
 def parseMongoDate(stringDate):
@@ -152,12 +152,23 @@ for t in rango:
 		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_ipv4libres_estimado3)+","+","+str(pool_reservado)+"\n")
 		#g.write(str(date.fromtimestamp(rango_pred[t]))+"\n")
-	elif t < len(serie_ipv4libres_pred[1]):
+	elif t < len(serie_ipv4libres_pred[1]) and t >= len(serie_ipv4libres_pred[2]):
 		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+",,,%s\n"%(str(pool_reservado)))
+	elif t < len(serie_ipv4libres_pred[2]) and t >= len(serie_ipv4libres_pred[1]):
+		int_ipv4libres_estimado3=int(round(serie_ipv4libres_pred[2][t]))
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,"+str(int_ipv4libres_estimado3)+","+","+str(pool_reservado)+"\n")
 	else:
 		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,,,%s\n" % (str(pool_reservado)))
 f.close()
+# g.close()
+
+if os.path.lexists("html/pred_ipv4libres3_latest.txt"):
+	os.remove("html/pred_ipv4libres3_latest.txt")
+
+os.chdir("html/")
+os.symlink("pred_ipv4libres3_"+str(hoy)+".txt", "pred_ipv4libres3_latest.txt")
+os.chdir("..")
 	
 print "Calculating model error..."
 #Calculando el error
