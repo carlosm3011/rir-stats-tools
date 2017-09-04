@@ -20,7 +20,7 @@ particular LACNIC.
 Libreria python de funciones de apoyo:
 
 * getfile: bajar archivos por HTTP
-* dpring: debugging print
+* dprint: debugging print
 
 ### RPKI Stats
 
