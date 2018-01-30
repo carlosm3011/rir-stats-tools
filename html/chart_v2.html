@@ -6,10 +6,10 @@ body {
     font-family: Arial, Helvetica, sans-serif;;
 }
 </style>
-<title>LACNIC Labs :: Modelado del Agotamiento de IPv4 - Fase 2</title>
+<title>LACNIC Labs :: Modelado del Agotamiento de IPv4 - Fase 3</title>
    <script src="https://www.google.com/jsapi"></script>
    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-   <script src="https://jquery-csv.googlecode.com/files/jquery.csv-0.71.js"></script>
+   <script src="jquery.csv-0.71.js"></script>
    <script>
       	google.load("visualization", "1.1", {packages:["corechart"]});
 	google.setOnLoadCallback(drawChart);
@@ -27,19 +27,18 @@ body {
 	hoy = yyyy+'-'+mm+'-'+dd;
 	
 	function drawChart() {
-   		$.get("pred_ipv4libres3_latest.txt", function(csvString) {
+   		$.get("pred_ipv4libres4_latest.txt", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 	
 			var data = new google.visualization.arrayToDataTable(arrayData);
 			//var runout = arrayData[arrayData.length-1][0];
 			//document.getElementById('h').innerHTML = "phase2-runout-date:"+runout;
 			var options = {
-   				title: 'Agotamiento IPv4 fase2',
-				colors:['red', '#FF8000', '#6A0888', '#0040FF', '#009124'],
+   				title: 'Agotamiento IPv4 fase3',
+				colors:['red', '#FF8000', '#0040FF', '#009124'],
 				series: {
 					0:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 1"},
   					1:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 2"},
-  					2:{lineWidth: 2, labelInLegend: "Modelo polinomico grado 3"},
   					3:{lineWidth: 4, labelInLegend: "IPv4 libres"},
   					4:{lineWidth: 1, labelInLegend: "Ingreso en fase 3"}
   					
@@ -57,19 +56,16 @@ body {
 <body>
 <script>
 
-$.getJSON("fechas3.json", function(data){
+$.getJSON("fechas4.json", function(data){
 	var today = data["model-run-date"]
 	document.getElementById('hoy').innerHTML = "Fecha de ejecuci&oacute;n: "+today;
-	var runout1 = data["phase2-runout-date-md1"]
-	var runout2 = data["phase2-runout-date-md2"]
-	var runout3 = data["phase2-runout-date-md3"]
+	var runout1 = data["phase3-runout-date-md1"]
+	var runout2 = data["phase3-runout-date-md2"]
 	var e1 = data["Error mdl 1"]
 	var e2 = data["Error mdl 2"]
-	var e3 = data["Error mdl 3"]
 	var pond = data["Fecha ponderada"]
-	document.getElementById('1').innerHTML = "Fin de la fase 2 modelo 1: "+runout1 +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Factor de error: "+e1;
-	document.getElementById('2').innerHTML = "Fin de la fase 2 modelo 2: "+runout2 +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Factor de error: "+e2;
-	document.getElementById('3').innerHTML = "Fin de la fase 2 modelo 3: "+runout3+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Factor de error: "+e3;
+	document.getElementById('1').innerHTML = "Fin de la fase 3 modelo 1: "+runout1 +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Factor de error: "+e1;
+	document.getElementById('2').innerHTML = "Fin de la fase 3 modelo 2: "+runout2 +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Factor de error: "+e2;
 	document.getElementById('4').innerHTML = "Fecha fin ponderada: "+pond;
 });
 </script>
@@ -78,8 +74,7 @@ $.getJSON("fechas3.json", function(data){
 <h5 id="hoy"></h5>
 <div><h4 id="1" ></h4> </div>
 <div><h4 id="2" ></h4> </div>
-<div><h4 id="3" ></h4> </div>
-<div><h5 id="4" ></h4> </div>
+<div><h4 id="4" ></h4> </div>
 </div>
 
 <div id="chart" style="height:800px"> </div>
