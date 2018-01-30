@@ -179,7 +179,7 @@ largo = xrange(0, len(serie_temporal)-1)
 media_ipv4libres = sum(serie_ipv4libres)/float(len(serie_temporal))
 
 errores = array([])
-for mdl in xrange(0,2):
+for mdl in xrange(0,1):
 	print mdl
 	total = 0
 	residuo = 0
