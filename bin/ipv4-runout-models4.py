@@ -30,7 +30,7 @@ def parseMongoDate(stringDate):
 
 hoy = date.today()
 fecha_fase3 = date(2017, 4, 5)
-poly_degree = xrange(1,3)
+poly_degree = xrange(1,2)
 lastdays = (hoy - fecha_fase3).days
 print lastdays
 dias_pred = 1170
@@ -145,27 +145,37 @@ rango=xrange(0, len(serie_ipv4libres_pred[0])-1)
 
 #Guardando datos en archivos
 f = open("html/pred_ipv4libres4_%s.txt" % (str(hoy)), "w")
-# g = open("tmp/vacios.txt", "w")
-f.write("Fecha,Modelo1,Modelo2,Conocido,Limite\n")
+#g = open("tmp/vacios.txt", "w")
+f.write("Fecha,Modelo1,Conocido,Limite\n")
 for t in rango:
 	int_ipv4libres_estimado1=int(round(serie_ipv4libres_pred[0][t]))
-	if date.fromtimestamp(rango_pred[t]) in fechas and t < len(serie_ipv4libres_pred[1]):
-		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
-		int_serie_ipv4libres=int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_serie_ipv4libres)+","+str(pool_reservado)+"\n")
-	elif t < len(serie_ipv4libres_pred[1]):
-		int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+","+str(pool_reservado)+"\n")
-		# g.write(str(date.fromtimestamp(rango_pred[t]))+"\n")
+	if date.fromtimestamp(rango_pred[t]) in fechas and t < len(serie_ipv4libres_pred[0]):
+		int_serie_ipv4libres = int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
+		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_serie_ipv4libres)+","+str(pool_reservado)+"\n")
+	else:
+		f.write(str(date.fromtimestamp(rango_pred[t])) + "," + str(int_ipv4libres_estimado1) + ",,%s\n" % (str(pool_reservado)))
+
+	# if date.fromtimestamp(rango_pred[t]) in fechas and t < len(serie_ipv4libres_pred[1]):
+    #
+	# 	int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
+	# 	int_serie_ipv4libres=int(serie_ipv4libres[fechas.index(date.fromtimestamp(rango_pred[t]))])
+	# 	f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+str(int_serie_ipv4libres)+","+str(pool_reservado)+"\n")
+	# elif t < len(serie_ipv4libres_pred[1]):
+    #
+	# 	int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
+	# 	f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+","+","+str(pool_reservado)+"\n")
+	# 	g.write(str(date.fromtimestamp(rango_pred[t]))+"\n")
 	# elif t < len(serie_ipv4libres_pred[1]) and t >= len(serie_ipv4libres_pred[2]):
 	# 	int_ipv4libres_estimado2=int(round(serie_ipv4libres_pred[1][t]))
 	# 	f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+","+str(int_ipv4libres_estimado2)+",,,%s\n"%(str(pool_reservado)))
-	elif t >= len(serie_ipv4libres_pred[1]):
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,"+","+str(pool_reservado)+"\n")
-	else:
-		f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,,,%s\n" % (str(pool_reservado)))
+	# elif t >= len(serie_ipv4libres_pred[0]):
+	# 	int_ipv4libres_estimado2 = int(round(serie_ipv4libres_pred[1][t]))
+	# 	f.write(str(date.fromtimestamp(rango_pred[t]))+",,"+str(int_ipv4libres_estimado2)+",,"+str(pool_reservado)+"\n")
+	# else:
+    #
+	# 	f.write(str(date.fromtimestamp(rango_pred[t]))+","+str(int_ipv4libres_estimado1)+",,,,%s\n" % (str(pool_reservado)))
 f.close()
-# g.close()
+#g.close()
 if os.path.lexists("html/pred_ipv4libres4_latest.txt"):
 	os.remove("html/pred_ipv4libres4_latest.txt")
 
@@ -191,32 +201,38 @@ for mdl in xrange(0,1):
 	print "done!"
 	print "Error2 para modelo de grado %s es %s" % (mdl+1, error2)
 
-#Calculando la fecha promedio ponderada
-suma = errores[0]+errores[1]
-res = 0
-for i in (0,1):
-	wi = errores[i]/suma
-	res = res+wi*fines[i]
 
-print "%s" % (date.fromtimestamp(res))
+#Calculando la fecha promedio ponderada
+# suma = errores[0]+errores[1]
+# res = 0
+#
+# for i in (0,1):
+# 	wi = errores[i]/suma
+# 	res = res+wi*fines[i]
+#
+# print "%s" % (date.fromtimestamp(res))
 
 #Generacion de json para fechas	y errores
 a = open("html/fechas4.json", "w")
 p3_date_md1 = date.fromtimestamp(serie_temporal_pred[0][-1])
-p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
-p3_pond = date.fromtimestamp(res)
+# p3_date_md2 = date.fromtimestamp(serie_temporal_pred[1][-1])
+# p3_pond = date.fromtimestamp(res)
 st = {'model-run-date':str(hoy),
       'phase3-runout-date-md1':str(p3_date_md1),
-      'phase3-runout-date-md2':str(p3_date_md2),
+      #'phase3-runout-date-md2':str(p3_date_md2),
       'Error mdl 1': errores[0],
-      'Error mdl 2': errores[1],
-      'Fecha ponderada': str(p3_pond)}
+      #'Error mdl 2': errores[1],
+      #'Fecha ponderada': str(p3_pond)
+	}
 dump = json.dumps(st)
 a.write(dump)
 a.close()
 
 e = open("html/errores.json", "w")
-st = {'Error mdl 1': errores[0], 'Error mdl 2': errores[1]}
+st = {
+	'Error mdl 1': errores[0],
+	#'Error mdl 2': errores[1]
+}
 dump = json.dumps(st)
 e.write(dump)
 e.close()
