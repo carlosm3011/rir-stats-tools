@@ -37,29 +37,29 @@ from commons.utils import json_load
 rir_config_data = { 'lacnic': 
                         {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-%s", "data/delegated-lacnic-latest"],
                          'dlge': ["ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-%s", "data/delegated-lacnic-extended-latest"],
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/lacnic.tal-roa-prefixes.csv'],
+                         'roaexport': ['http://mvuy10.labs.lacnic.net/rpki/batch-validation/%s/lacnic.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/lacnic_region.json')
                         },
                     'afrinic':
                         {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/afrinic/delegated-afrinic-%s", "data/delegated-afrinic-latest"],
                          'dlge': ["ftp://ftp.lacnic.net/pub/stats/afrinic/delegated-afrinic-extended-%s", "data/delegated-afrinic-extended-latest"],
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/afrinic.tal-roa-prefixes.csv']
+                         'roaexport': ['http://mvuy10.labs.lacnic.net/rpki/batch-validation/%s/afrinic.tal-roa-prefixes.csv']
                          },
                     'apnic':
                         {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/apnic/delegated-apnic-%s", "data/delegated-apnic-latest"],
                          'dlge': ["ftp://ftp.lacnic.net/pub/stats/apnic/delegated-apnic-extended-%s", "data/delegated-apnic-extended-latest"] ,
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/apnic.tal-roa-prefixes.csv'],
+                         'roaexport': ['http://mvuy10.labs.lacnic.net/rpki/batch-validation/%s/apnic.tal-roa-prefixes.csv'],
                         },                    
                     'ripencc':
                         {'dlg1': ["ftp://ftp.lacnic.net/pub/stats/ripencc/delegated-ripencc-%s", "data/delegated-ripencc-latest"], 
                          'dlge': ["ftp://ftp.lacnic.net/pub/stats/ripencc/delegated-ripencc-extended-%s", "data/delegated-ripencc-extended-latest"],
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/ripe-ncc.tal-roa-prefixes.csv'],
+                         'roaexport': ['http://mvuy10.labs.lacnic.net/rpki/batch-validation/%s/ripe-ncc.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/ripencc_region.json')
                     },
                     'arin':
                         {'dlg1': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-%s", "data/delegated-arin-latest"],
                          'dlge': ["ftp://ftp.arin.net/pub/stats/arin/delegated-arin-extended-%s", "data/delegated-arin-extended-latest"],
-                         'roaexport': ['http://ripeval.labs.lacnic.net/rpki/batch-validation/%s/arin.tal-roa-prefixes.csv'],
+                         'roaexport': ['http://mvuy10.labs.lacnic.net/rpki/batch-validation/%s/arin.tal-roa-prefixes.csv'],
                          'countrydata': json_load('etc/arin_region.json')                         
                          },                    
                     'lacnic_br':
